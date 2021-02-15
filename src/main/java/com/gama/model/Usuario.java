@@ -28,6 +28,11 @@ public class Usuario {
 	@Column(nullable = false, length = 30)
 	private String nome;
 	
+	
+	@Column(unique = true, nullable = false, length = 20)
+	private String telefone;
+	
+	
 	@Column(unique = true, nullable = false, length = 14)
 	private String cpf;
 	
@@ -36,11 +41,12 @@ public class Usuario {
 	
 	public Usuario() {}
 	
-	public Usuario(String login, String senha, String nome, String cpf) {		
+	public Usuario(String login, String senha, String nome, String cpf, String telefone) {		
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
 		this.cpf = cpf;
+		this.telefone = telefone;
 	}
 
 	public int getId() {
@@ -71,6 +77,14 @@ public class Usuario {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}	
+	
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+	
+	public String getTelefone() {
+		return telefone;
+	}
 	
 	public List<String> getListError() {
 		return listError;
