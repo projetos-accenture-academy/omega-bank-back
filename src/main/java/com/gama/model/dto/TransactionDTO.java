@@ -2,11 +2,13 @@ package com.gama.model.dto;
 
 import java.time.LocalDate;
 
+import com.gama.enums.TransactionType;
 import com.gama.model.Account;
 import com.gama.model.AccountPlan;
 
 public class TransactionDTO {
 	private Long id;
+	private TransactionType transactionType;
 	private AccountPlan accountPlan;
 	private Account sourceAccount;
 	private Account destinationAccount;
@@ -18,8 +20,8 @@ public class TransactionDTO {
 	public TransactionDTO() {}
 
 
-	public TransactionDTO(Long id, AccountPlan accountPlan, Account sourceAccount, Account destinationAccount,
-			LocalDate date, Double value, String description) 
+	public TransactionDTO(Long id, TransactionType transactionType, AccountPlan accountPlan, Account sourceAccount, 
+			Account destinationAccount, LocalDate date, Double value, String description) 
 	{
 		this.id = id;
 		this.accountPlan = accountPlan;
@@ -93,6 +95,16 @@ public class TransactionDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+
+	public TransactionType getTransactionType() {
+		return transactionType;
+	}
+
+
+	public void setTransactionType(TransactionType transactionType) {
+		this.transactionType = transactionType;
 	}
 	
 	

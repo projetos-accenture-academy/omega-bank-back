@@ -60,6 +60,8 @@ public class Transaction {
 	{
 		
 	}
+	
+	
 
 	public Long getId() {
 		return id;
