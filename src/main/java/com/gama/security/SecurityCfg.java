@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
@@ -23,7 +24,7 @@ public class SecurityCfg<DataSource> extends WebSecurityConfigurerAdapter {
     public void configAuthentication(AuthenticationManagerBuilder auth)
         throws Exception {
 
-        auth.jdbcAuthentication().dataSource(dataSource)
+        auth.jdbcAuthentication().dataSource((javax.sql.DataSource) dataSource)
             .passwordEncoder(passwordEncoder())
             .usersByUsernameQuery("{SQL}") //SQL query
             .authoritiesByUsernameQuery("{SQL}"); //SQL query
