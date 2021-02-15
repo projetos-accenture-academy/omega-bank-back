@@ -53,12 +53,6 @@
 			<version>5.7.1</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!-- SPRING SECURITY   -->
-		<dependency>
-		<groupId>org.springframework.security</groupId>
-		<artifactId>spring-security-core</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
