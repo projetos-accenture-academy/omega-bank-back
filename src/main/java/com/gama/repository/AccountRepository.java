@@ -14,7 +14,6 @@ import com.gama.model.Usuario;
 public interface AccountRepository extends CrudRepository<Account, Integer> {
 	interface AccountTypesInterface{
 	    TipoConta getTipo();
-	   
 	}
 	
 	boolean existsByNumero(String number);

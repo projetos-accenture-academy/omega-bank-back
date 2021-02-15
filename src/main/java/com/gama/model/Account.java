@@ -18,7 +18,7 @@ import com.sun.istack.NotNull;
 @Entity
 @Table(name = "contas", uniqueConstraints={
 	    @UniqueConstraint(columnNames = {"numero", "tipo"})
-	})
+})
 public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
