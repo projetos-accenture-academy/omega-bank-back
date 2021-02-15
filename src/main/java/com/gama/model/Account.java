@@ -16,10 +16,9 @@ import com.gama.enums.TipoConta;
 import com.sun.istack.NotNull;
 
 @Entity
-@Table(name = "contas",uniqueConstraints={
+@Table(name = "contas", uniqueConstraints={
 	    @UniqueConstraint(columnNames = {"numero", "tipo"})
 	})
-
 public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +30,7 @@ public class Account {
 	@Column(nullable = false, length = 50)
 	private String descricao;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TipoConta tipo;
 	

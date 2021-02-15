@@ -4,27 +4,30 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.gama.model.Account;
+import com.gama.model.AccountPlan;
 import com.gama.model.Usuario;
 
 
 public class SessionDTO {
 	private String token;
-	private LocalDateTime tokenExpirationDate;
+	private LocalDateTime tokenExpirationTime;
+	private LocalDateTime tokenExpeditionTime;
 	private Usuario user;
 	private List<Account> accounts;
-
-	// TODO: Lista de plano de contas
+	private List<AccountPlan> plans;
 	
 	public SessionDTO() {
 		
 	}
 	
-	public SessionDTO(Usuario user, String token, LocalDateTime tokenExpirationDate, List accounts) {
+	public SessionDTO(Usuario user, String token, LocalDateTime tokenExpirationTime, LocalDateTime tokenExpeditionTime, List<Account> accounts, List<AccountPlan> plans ) {
 		super();
 		this.user = user;
 		this.token = token;
-		this.tokenExpirationDate = tokenExpirationDate;
+		this.tokenExpirationTime = tokenExpirationTime;
+		this.tokenExpeditionTime = tokenExpeditionTime;
 		this.accounts = accounts;
+		this.plans = plans;
 	}
 
 
@@ -44,20 +47,36 @@ public class SessionDTO {
 		this.token = token;
 	}
 
-	public LocalDateTime getTokenExpirationDate() {
-		return tokenExpirationDate;
+	public LocalDateTime getTokenExpirationTime() {
+		return tokenExpirationTime;
 	}
 
-	public void setTokenExpirationDate(LocalDateTime tokenExpirationDate) {
-		this.tokenExpirationDate = tokenExpirationDate;
+	public void setTokenExpirationTime(LocalDateTime tokenExpirationTime) {
+		this.tokenExpirationTime = tokenExpirationTime;
+	}
+	
+	public LocalDateTime getTokenExpeditionTime() {
+		return tokenExpeditionTime;
 	}
 
-	public List getAccounts() {
+	public void setTokenExpeditionTime(LocalDateTime tokenExpeditionTime) {
+		this.tokenExpeditionTime = tokenExpeditionTime;
+	}
+
+	public List<Account> getAccounts() {
 		return accounts;
 	}
 
-	public void setAccounts(List accounts) {
+	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
+	}
+
+	public List<AccountPlan> getPlans() {
+		return plans;
+	}
+
+	public void setPlans(List<AccountPlan> plans) {
+		this.plans = plans;
 	}
 	
 	
