@@ -29,12 +29,12 @@ public class Lancamento {
 	//Is null when it's a deposit
 	@JoinColumn (name = "id_conta_origem", nullable = true)
 	@ManyToOne
-	private Conta contaOrigem;
+	private Account contaOrigem;
 	
   //It's null when it's a withdrawal
 	@JoinColumn(name = "id_conta_destino", nullable = true)
 	@ManyToOne
-	private Conta contaDestino;
+	private Account contaDestino;
 	
 	@Column
 	private LocalDate data;
@@ -58,19 +58,19 @@ public class Lancamento {
 		return id;
 	}
 
-	public Conta getContaOrigem() {
+	public Account getContaOrigem() {
 		return contaOrigem;
 	}
 
-	public void setContaOrigem(Conta contaOrigem) {
+	public void setContaOrigem(Account contaOrigem) {
 		this.contaOrigem = contaOrigem;
 	}
 
-	public Conta getContaDestino() {
+	public Account getContaDestino() {
 		return contaDestino;
 	}
 
-	public void setContaDestino(Conta contaDestino) {
+	public void setContaDestino(Account contaDestino) {
 		this.contaDestino = contaDestino;
 	}
 

@@ -9,20 +9,20 @@ public class Validator {
 	
 	/**
 	 * Verifica se um campo é null (quando é um objeto) ou vazio (se for string)
-	 * @param obj O objeto (ou variavel primitiva) a ser validado
+	 * @param object O objeto (ou variavel primitiva) a ser validado
 	 * @return boolean
 	 */
-	public static boolean valorVazioOuNull(Object obj) {
-		if((obj == null) || (obj instanceof String && ((String) obj).isEmpty()))
+	public static boolean isEmptyValue(Object object) {
+		if((object == null) || (object instanceof String && ((String) object).isEmpty()))
 			return true;
 		
 		return false;
 	}
 	
 
-	public static void valorVazioOuNull(Object obj,  String mensagem) throws Exception {
-		if((obj == null) || (obj instanceof String && ((String) obj).isEmpty()))
-			throw new Exception(mensagem);
+	public static void isEmptyValue(Object object,  String message) throws Exception {
+		if((object == null) || (object instanceof String && ((String) object).isEmpty()))
+			throw new Exception(message);
 		
 	}
 	

@@ -15,7 +15,7 @@ import com.gama.enums.TipoConta;
 
 @Entity
 @Table(name = "contas")
-public class Conta {
+public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -37,7 +37,7 @@ public class Conta {
 	private Usuario usuario;
 	
 	
-	public Conta() {
+	public Account() {
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class Conta {
 	 * @param usuario
 	 * @throws UsuarioNuloException 
 	 */
-	public Conta(Usuario usuario, String numero) {
+	public Account(Usuario usuario, String numero) {
 
 		this.saldo = 0.0;
 		this.descricao = "Conta Corrente";
@@ -77,6 +77,10 @@ public class Conta {
 	public Double getSaldo() {
 		return saldo;
 	}	
+
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
 
 	public String getDescricao() {
 		return descricao;

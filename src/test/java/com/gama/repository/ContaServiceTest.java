@@ -24,10 +24,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.gama.exceptions.ContaExistenteException;
-import com.gama.model.Conta;
+import com.gama.exceptions.AccountAlreadyExistsException;
+import com.gama.model.Account;
 import com.gama.model.Usuario;
-import com.gama.service.ContaService;
+import com.gama.service.AccountService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -36,7 +36,7 @@ import com.gama.service.ContaService;
 public class ContaServiceTest {
 
     @Autowired
-    ContaService ContaService;
+    AccountService accountService;
    
     @Autowired
     UsuarioRepository usuarioRepository;
@@ -60,13 +60,13 @@ public class ContaServiceTest {
     public void criarContaSemUsuario() throws Exception {  
     	
         Exception exception = assertThrows(Exception.class, () -> {
-        	ContaService.adicionarConta(new Conta(null, ""));
+        	accountService.saveAccount(new Account(null, ""));
         });
         
         assertEquals("A conta necessita de um usuário associado", exception.getMessage());
     	    	
         exception = assertThrows(Exception.class, () -> {
-        	ContaService.adicionarConta(new Conta(new Usuario(), ""));
+        	accountService.saveAccount(new Account(new Usuario(), ""));
         });
         
         assertEquals("A conta necessita de um usuário com login", exception.getMessage());
@@ -79,12 +79,12 @@ public class ContaServiceTest {
     public void criarContaSemTipoDefinido() throws Exception {  
     	Usuario usuario = new Usuario();
     	usuario.setLogin("login");
-        Conta conta = new Conta(usuario, "num123");
+        Account conta = new Account(usuario, "num123");
         
         conta.setTipo(null);
     	
         Exception exception = assertThrows(Exception.class, () -> {
-        	ContaService.adicionarConta(conta);
+        	accountService.saveAccount(conta);
         });
         
         assertEquals("A conta necessita de um tipo definido", exception.getMessage());
@@ -98,7 +98,7 @@ public class ContaServiceTest {
     public void obterListaUsuarioComParamNull() throws Exception {
 
     	Exception exception = assertThrows(Exception.class, () ->{
-    		ContaService.getContasPorUsuario(null);
+    		accountService.getAccountsByUser(null);
     	});
     	
     	assertEquals("Não é possível obter uma lista de contas através de uma referência nula de usuário", exception.getMessage());
@@ -109,7 +109,7 @@ public class ContaServiceTest {
     public void obterContaComParamNull() throws Exception {
 
     	Exception exception = assertThrows(Exception.class, () ->{
-    		ContaService.getContaPorNumero(null);
+    		accountService.getAccountByNumber(null);
     	});
     	
     	assertEquals("Não é possível pesquisar uma conta através de uma parâmetro nulo", exception.getMessage());
@@ -120,7 +120,7 @@ public class ContaServiceTest {
     public void deletarContaComParamNull() throws Exception {
 
     	Exception exception = assertThrows(Exception.class, () ->{
-    		ContaService.removerConta(null);
+    		accountService.removeAccount(null);
     	});
     	
     	assertEquals("Não é possível remover uma conta através de uma referência nula", exception.getMessage());
@@ -130,7 +130,7 @@ public class ContaServiceTest {
     @Test
     @DisplayName("Obter uma conta sem um número válido")
     public void obterContaSemNumero() throws Exception {    	
-    	assertNull(ContaService.getContaPorNumero("vazio"));
+    	assertNull(accountService.getAccountByNumber("vazio"));
     }
     
     
@@ -142,7 +142,7 @@ public class ContaServiceTest {
         
     	assertNotNull(usuarioCriado);
     	
-        assertNotNull(ContaService.adicionarConta(new Conta(usuarioCriado, usuarioCriado.getLogin())));
+        assertNotNull(accountService.saveAccount(new Account(usuarioCriado, usuarioCriado.getLogin())));
     }
 	    
     @Test
@@ -153,16 +153,18 @@ public class ContaServiceTest {
     	// Procura pelo usuário cadastrado no teste anterior para tentar adicionar uma nova conta
     	// com o mesmo número para este usuário
     	Optional<Usuario> usuarioCriado = usuarioRepository.findByLogin(usuarioTeste.getLogin());
-    	Conta conta = new Conta(usuarioCriado.get(), usuarioCriado.get().getLogin());
+    	Account conta = new Account(usuarioCriado.get(), usuarioCriado.get().getLogin());
 
     	assertNotNull(usuarioCriado);
     	
-        Exception exception = assertThrows(ContaExistenteException.class, () -> {
-        	ContaService.adicionarConta(conta);
+        Exception exception = assertThrows(AccountAlreadyExistsException.class, () -> {
+        	accountService.saveAccount(conta);
         });
 
         
-        String mensagemEsperada = "Conta Nº " + conta.getNumero() + " já existe.";
+        String mensagemEsperada = "Não é possível adicionar a conta Nº " + 
+				conta.getNumero() + 
+				" pois já existe um registro com esse número.";
         String mensagemRecebida = exception.getMessage();
         
         assertTrue(mensagemRecebida.equals(mensagemEsperada));
@@ -173,14 +175,14 @@ public class ContaServiceTest {
     @Order(3)
     @DisplayName("Obter uma conta através do seu número")
     public void obterConta() throws Exception {
-    	assertNotNull(ContaService.getContaPorNumero(usuarioTeste.getLogin()));
+    	assertNotNull(accountService.getAccountByNumber(usuarioTeste.getLogin()));
     }
     
     @Test
     @Order(4)
     @DisplayName("Obter todas as contas de um usuário")
     public void obterTodasContasUsuario() throws Exception {
-    	List<Conta> todasContas = ContaService.getContasPorUsuario(usuarioTeste);
+    	List<Account> todasContas = accountService.getAccountsByUser(usuarioTeste);
     	
     	assertNotNull(todasContas);
     	
@@ -192,12 +194,12 @@ public class ContaServiceTest {
     @DisplayName("Deletar uma conta de um usuário")
     public void deletarConta() throws Exception {
     	
-    	Conta conta = ContaService.getContaPorNumero(usuarioTeste.getLogin());
+    	Account conta = accountService.getAccountByNumber(usuarioTeste.getLogin());
     	assertNotNull(conta);
 
-    	ContaService.removerConta(conta);
+    	accountService.removeAccount(conta);
     	
-    	assertNull(ContaService.getContaPorNumero(conta.getNumero()));
+    	assertNull(accountService.getAccountByNumber(conta.getNumero()));
     	
     }
 }

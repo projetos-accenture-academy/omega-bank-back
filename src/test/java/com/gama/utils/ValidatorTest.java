@@ -13,7 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
-import com.gama.model.Conta;
+import com.gama.model.Account;
 
 /**
  * @author Kellison
@@ -34,12 +34,12 @@ class ValidatorTest {
 	@Test
 	@DisplayName("Validar objeto nulo ou vazio")
 	void validarObjetoNuloComBoolean() {
-		Conta conta = null;
+		Account conta = null;
 
-		assertTrue(Validator.valorVazioOuNull(conta));
+		assertTrue(Validator.isEmptyValue(conta));
 		
 		String vazia = "";
-		assertTrue(Validator.valorVazioOuNull(vazia));
+		assertTrue(Validator.isEmptyValue(vazia));
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ class ValidatorTest {
 	void validarObjetoNuloComException() {
 
 		Exception exception = assertThrows(Exception.class, () -> {
-			Validator.valorVazioOuNull(new Conta().getNumero(), "O objeto não pode ser null");
+			Validator.isEmptyValue(new Account().getNumero(), "O objeto não pode ser null");
 		});
 		
 		assertEquals("O objeto não pode ser null", exception.getMessage());

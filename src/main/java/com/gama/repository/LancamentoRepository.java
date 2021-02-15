@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.gama.model.Conta;
+import com.gama.model.Account;
 import com.gama.model.Lancamento;
 
 
@@ -19,9 +19,9 @@ public interface LancamentoRepository extends CrudRepository<Lancamento, Integer
 	boolean existsById(Long id);
 	Lancamento findById(Long id);
 	
-	List<Lancamento> findByContaOrigem(Conta conta);
+	List<Lancamento> findByContaOrigem(Account conta);
 	
-	List<Lancamento> findByContaDestino(Conta conta);
+	List<Lancamento> findByContaDestino(Account conta);
 	
 	List<Lancamento> findByData(LocalDate data);
 	

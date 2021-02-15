@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gama.exceptions.LancamentoExistenteException;
-import com.gama.model.Conta;
+import com.gama.model.Account;
 import com.gama.model.Lancamento;
 import com.gama.repository.LancamentoRepository;
 
@@ -62,7 +62,7 @@ public class LancamentoService {
 	 * @param contaOrigem: Conta que enviou os lançamentos buscados
 	 * @return Uma lista com todos os lançamentos que possuem uma conta de origem especificada
 	 */
-	public Iterable<Lancamento> getAllLancamentosOrigem(Conta contaOrigem)
+	public Iterable<Lancamento> getAllLancamentosOrigem(Account contaOrigem)
 	{
 		return lancamentoRepository.findByContaOrigem(contaOrigem);
 	}
@@ -72,7 +72,7 @@ public class LancamentoService {
 	 * @param contaOrigem: Conta que recebeu os lançamentos buscados
 	 * @return Uma lista com todos os lançamentos que possuem uma conta de destino especificada
 	 */
-	public Iterable<Lancamento> getAllLancamentosDestino(Conta contaDestino)
+	public Iterable<Lancamento> getAllLancamentosDestino(Account contaDestino)
 	{
 		return lancamentoRepository.findByContaDestino(contaDestino);
 	}
