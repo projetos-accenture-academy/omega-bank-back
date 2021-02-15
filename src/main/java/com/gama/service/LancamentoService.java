@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.gama.exceptions.LancamentoExistenteException;
 import com.gama.model.Account;
-import com.gama.model.Lancamento;
+import com.gama.model.Transaction;
 import com.gama.repository.LancamentoRepository;
 
 @Component
@@ -21,7 +21,7 @@ public class LancamentoService {
 	 * @param Lançamento a ser inserido
 	 * @throws LançamentoExistenteException
 	 */
-	public void AdicionarLancamento(Lancamento lancamento) throws LancamentoExistenteException
+	public void AdicionarLancamento(Transaction lancamento) throws LancamentoExistenteException
 	{
 		boolean lancamentoExistente = lancamentoRepository.existsById(lancamento.getId());
 		
@@ -41,7 +41,7 @@ public class LancamentoService {
 	 * @param id
 	 * @return Um Objeto Lançamento com o id especificado
 	 */
-	public Lancamento getLancamento(Long id)
+	public Transaction getLancamento(Long id)
 	{
 		return lancamentoRepository.findById(id);
 	}
@@ -52,7 +52,7 @@ public class LancamentoService {
 	 * Obtém todos os lançamentos existentes
 	 * @return Uma lista com todos os lançamentos existentes na base de dados
 	 */
-	public Iterable<Lancamento> getAllLancamentos()
+	public Iterable<Transaction> getAllLancamentos()
 	{
 		return lancamentoRepository.findAll();
 	}
@@ -62,7 +62,7 @@ public class LancamentoService {
 	 * @param contaOrigem: Conta que enviou os lançamentos buscados
 	 * @return Uma lista com todos os lançamentos que possuem uma conta de origem especificada
 	 */
-	public Iterable<Lancamento> getAllLancamentosOrigem(Account contaOrigem)
+	public Iterable<Transaction> getAllLancamentosOrigem(Account contaOrigem)
 	{
 		return lancamentoRepository.findByContaOrigem(contaOrigem);
 	}
@@ -72,7 +72,7 @@ public class LancamentoService {
 	 * @param contaOrigem: Conta que recebeu os lançamentos buscados
 	 * @return Uma lista com todos os lançamentos que possuem uma conta de destino especificada
 	 */
-	public Iterable<Lancamento> getAllLancamentosDestino(Account contaDestino)
+	public Iterable<Transaction> getAllLancamentosDestino(Account contaDestino)
 	{
 		return lancamentoRepository.findByContaDestino(contaDestino);
 	}
@@ -82,7 +82,7 @@ public class LancamentoService {
 	 * @param data
 	 * @return
 	 */
-	public Iterable<Lancamento> getLancamentoByData(LocalDate data)
+	public Iterable<Transaction> getLancamentoByData(LocalDate data)
 	{
 		return lancamentoRepository.findByData(data);
 	}
@@ -94,7 +94,7 @@ public class LancamentoService {
 	 * @param data_end
 	 * @return
 	 */
-	public Iterable<Lancamento> getLancamentoByContaOrigemAndDataBetween(Long id_conta_origem, LocalDate data_start, LocalDate data_end)
+	public Iterable<Transaction> getLancamentoByContaOrigemAndDataBetween(Long id_conta_origem, LocalDate data_start, LocalDate data_end)
 	{
 		return lancamentoRepository.findLancamentoByContaOrigemBetweenData(id_conta_origem, data_start, data_end);
 	}
@@ -107,7 +107,7 @@ public class LancamentoService {
 	 * @param data_end
 	 * @return
 	 */
-	public Iterable<Lancamento> getLancamentoByContaDestinoAndDataBetween(Long id_conta_destino, LocalDate data_start, LocalDate data_end)
+	public Iterable<Transaction> getLancamentoByContaDestinoAndDataBetween(Long id_conta_destino, LocalDate data_start, LocalDate data_end)
 	{
 		return lancamentoRepository.findLancamentoByContaDestinoBetweenData(id_conta_destino, data_start, data_end);
 	}
