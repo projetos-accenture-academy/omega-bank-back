@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.gama.enums.TipoConta;
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "contas",uniqueConstraints={
@@ -38,6 +39,7 @@ public class Account {
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
+	@NotNull
 	private Usuario usuario;
 	
 	
