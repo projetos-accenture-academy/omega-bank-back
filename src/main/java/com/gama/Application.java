@@ -31,6 +31,11 @@ public class Application {
 
 			bean.save(pc);
 			System.out.println("Id é " + pc.getId());
+
+			System.out.println(bean.findByUsuarioCpf("000.003.003-99"));
+			Usuario user = new Usuario();
+			user.setCpf("000.003.003-00");
+			System.out.println(bean.findByUsuarioCpf("000.003.003-00"));
 		};
 	}
 

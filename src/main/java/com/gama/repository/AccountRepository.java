@@ -11,10 +11,11 @@ import com.gama.model.Account;
 import com.gama.model.Usuario;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Integer> {
+public interface AccountRepository extends CrudRepository<Account, Integer> {
 
 	boolean existsByNumero(String number);
-	boolean existsByNumeroAndTipo(String number, TipoConta tipo);
+	boolean existsByNumeroAndTipo(String number, TipoConta type);
 	Account findByNumero(String number);
+	List<Account> findByUsuarioCpf(String cpf);
 	List<Account> findByUsuario(Usuario user);
 }
