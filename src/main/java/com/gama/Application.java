@@ -24,7 +24,7 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 	
-	@Autowired
+	/*@Autowired
 	UsuarioRepository usr;
 	
 	@Autowired
@@ -51,6 +51,6 @@ public class Application {
 //			AccountPlan ap2 = new AccountPlan(u2, "Plano de conta do usuário " + u2.getId());
 //			accplan.save(ap2);
 		};
-	}
+	}*/
 
 }
