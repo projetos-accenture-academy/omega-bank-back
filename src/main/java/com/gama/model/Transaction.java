@@ -26,9 +26,9 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	//Never null
 	
 	@NotNull
+	@ManyToOne
 	@JoinColumn(name = "id_plano_conta")
 	private AccountPlan accountPlan;
 	
