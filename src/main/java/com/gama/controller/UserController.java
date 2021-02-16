@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,7 +35,7 @@ public class UserController  {
 	
 	
 	@PostMapping()
-	public void post(@RequestBody Usuario user){
+	public void post(@RequestBody @Valid Usuario user){
 		try {
 			usuarioService.salvarUsuario(user);
 		} catch (Exception e) {
