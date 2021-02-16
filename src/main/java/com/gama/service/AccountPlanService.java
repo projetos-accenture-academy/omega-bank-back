@@ -32,6 +32,7 @@ public class AccountPlanService {
 		{
 			//Validates passed description
 			Validator.isEmptyValue(accountPlan.getdescription(), "O Plano de conta necessita de uma descrição");
+			Validator.isEmptyValue(accountPlan.getuser(), "O Plano de conta deve estar associado a um usuário");
 			
 			boolean accountPlanExists = accPlanRepo.existsByUserAndDescription(accountPlan.getuser(), accountPlan.getdescription() );
 			if(accountPlanExists && accountPlan.getId()==null)
@@ -82,8 +83,6 @@ public class AccountPlanService {
 		Validator.isEmptyValue(accountPlan, "Não é possível remover um plano de conta através de uma referência nula");
 		
 		accPlanRepo.delete(accountPlan);
-		
-		
 	}
 	
 }
