@@ -19,7 +19,7 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(nullable = false, length = 20)
+	@Column(unique=true,nullable = false, length = 20)
 	private String login;
 	
 	@Column(nullable = false, length = 8)
@@ -27,6 +27,9 @@ public class Usuario {
 	
 	@Column(nullable = false, length = 30)
 	private String nome;
+	
+	@Column(unique=true, nullable = false, length=11)
+	private String telefone;
 	
 	@Column(unique = true, nullable = false, length = 14)
 	private String cpf;
@@ -36,11 +39,12 @@ public class Usuario {
 	
 	public Usuario() {}
 	
-	public Usuario(String login, String senha, String nome, String cpf) {		
+	public Usuario(String login, String senha, String nome, String cpf,  String telefone) {		
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
 		this.cpf = cpf;
+		this.telefone = telefone;
 	}
 
 	public int getId() {
@@ -72,13 +76,20 @@ public class Usuario {
 		this.cpf = cpf;
 	}	
 	
+	public String getTelefone() {
+		return telefone;
+	}
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}	
+	
 	public List<String> getListError() {
 		return listError;
 	}
 		
 	@Override
 	public String toString() {
-		return "Usuario [id = " + id + ",login=" + login + ", senha=" + senha + ", nome=" + nome + ", cpf=" + cpf + "]";
+		return "Usuario [id = " + id + ",login=" + login + ", senha=" + senha + ", nome=" + nome + ", cpf=" + cpf + ", telefone=" + telefone + "]";
 	}
 	
 	public boolean valid() {
@@ -116,11 +127,13 @@ public class Usuario {
 	    if (cpf.isEmpty()) {
 			listError.add("O cpf deve ser informado.");
 			return false;
-		}	    
+		}	
+	    /*
 	    if (cpf.matches("(\\d{3})(\\d{3})(\\d{3})(\\d{2})")) {
 			listError.add("O cpf informado é inválido.");
 			return false;
-		}		
+		}
+		*/		
 		
 		return true;
 	}	
