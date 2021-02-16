@@ -28,6 +28,11 @@ public class AccountPlanDTO {
 		
 	}
 
+	public static AccountPlan transformToObject(AccountPlanDTO apd)
+	{
+		return new AccountPlan(apd.getUser(), apd.getDescription());
+
+	}
 	public Integer getId() {
 		return id;
 	}
