@@ -36,9 +36,9 @@ public class UserController  {
 	
 	
 	@PostMapping()
-	public void post(@RequestBody Usuario user){
+	public void post(@RequestBody Usuario usuario){
 		try {
-			usuarioService.salvarUsuario(user);
+			this.usuarioService.salvarUsuario(usuario);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
