@@ -35,26 +35,35 @@ public class TransactionService {
 			Validator.isEmptyValue(transaction.getValue(), "O Lançamento necessita de um valor definido");
 			
 			//Validates null accounts
-			Validator.isEmptyValue(transaction.getDestinationAccount()==null && transaction.getSourceAccount()==null, 
-									"O Lançamento necessita de ao menos uma conta definida");
+			if(transaction.getDestinationAccount()==null && transaction.getSourceAccount()==null)
+			{
+				throw new IllegalArgumentException("O Lançamento necessita de ao menos uma conta definida");
+			}
+		
 			
-			//Based on transaction type, check if the source/destination value
+			//Based on transaction type, check if the source/destination value is valid
 			switch(transactionType)
 			{
 			case T:
-				Validator.isEmptyValue(transaction.getDestinationAccount()==null || transaction.getSourceAccount()==null, 
-					"O Lançamento(Tranferência) necessita de contas de origem e destino definidas");
+				if(transaction.getDestinationAccount()==null || transaction.getSourceAccount()==null)
+				{
+					throw new IllegalArgumentException("O Lançamento(Tranferência) necessita de contas de origem e destino definidas");
+				}
 				break;
 			case D:
-				Validator.isEmptyValue(transaction.getDestinationAccount()==null && transaction.getSourceAccount()!=null, 
-						"O Lançamento(Despesa) necessita de conta de origem definida e destino nula");
+				if(transaction.getDestinationAccount()!=null || transaction.getSourceAccount()==null)
+				{
+					throw new IllegalArgumentException("O Lançamento(Despesa) necessita de conta de origem definida e destino nula");
+				}
 				break;
 			case R:
-				Validator.isEmptyValue(transaction.getDestinationAccount()!=null && transaction.getSourceAccount()==null, 
-						"O Lançamento(Despesa) necessita de conta de origem nula e destino definida");
+				if(transaction.getDestinationAccount()==null || transaction.getSourceAccount()!=null)
+				{
+					throw new IllegalArgumentException("O Lançamento(Receita) necessita de conta de origem nula e destino definida");
+				}
 				break;
 			default:
-				break;
+				throw new IllegalArgumentException("Tipo de Transação (" + transactionType.toString() + ") inválido");
 				
 			}
 			
