@@ -57,7 +57,7 @@ public class SwaggerConfig {
 		apiInfoBuilder.title("ÔmegaBank - API");
 		apiInfoBuilder.description("API ÔmegaBank - Desafio Accenture Turma 2");
 		apiInfoBuilder.version("1.0");
-		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Uso Gama Academy");
+		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Omega Bank");
 		apiInfoBuilder.license("Licença - Gama Academy");
 		apiInfoBuilder.licenseUrl("");
 		apiInfoBuilder.contact(this.contato());
@@ -68,7 +68,7 @@ public class SwaggerConfig {
 	private Contact contato() {
  
 		return new Contact(
-				"Turma 2, Grupo 2",
+				"Turma 2 - Grupo 2",
 				"https://github.com/projetos-accenture-academy/omega-bank-back", 
 				"teste@omegabank.com");
 	}
