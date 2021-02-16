@@ -10,27 +10,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import com.gama.enums.TipoConta;
-import com.sun.istack.NotNull;
 
 @Entity
-@Table(name = "contas", uniqueConstraints={
-	    @UniqueConstraint(columnNames = {"numero", "tipo"})
-})
+@Table(name = "contas")
 public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(nullable = false,length = 20)
+	@Column(unique = true, nullable = false,length = 20)
 	private String numero;
 	
 	@Column(nullable = false, length = 50)
 	private String descricao;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TipoConta tipo;
 	
@@ -39,7 +34,6 @@ public class Account {
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
-	@NotNull
 	private Usuario usuario;
 	
 	

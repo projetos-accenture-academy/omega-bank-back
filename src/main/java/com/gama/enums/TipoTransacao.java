@@ -6,7 +6,7 @@ package com.gama.enums;
  * <b>T</b> - Transferências
  *
  */
-public enum TransactionType {
+public enum TipoTransacao {
 	R,
 	D,
 	T

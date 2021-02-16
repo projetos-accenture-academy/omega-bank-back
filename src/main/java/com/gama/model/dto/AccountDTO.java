@@ -2,20 +2,20 @@ package com.gama.model.dto;
 
 import java.util.List;
 
-import com.gama.model.Transaction;
+import com.gama.model.Lancamento;
 
 public class AccountDTO {
 	private Integer id;
 	private Double balance;
 	private String description;
 	private Integer numberOfStatements;
-	private List<Transaction> accountStatements;
+	private List<Lancamento> accountStatements;
 	
 	public AccountDTO() {
 		
 	}
 
-	public AccountDTO(Integer id, Double balance, String description, List<Transaction> accountStatements, Integer numberOfStatements) {
+	public AccountDTO(Integer id, Double balance, String description, List<Lancamento> accountStatements, Integer numberOfStatements) {
 		super();
 		this.id = id;
 		this.balance = balance;
@@ -43,7 +43,7 @@ public class AccountDTO {
 		this.balance = balance;
 	}
 	
-	public List<Transaction> getAccountStatements() {
+	public List<Lancamento> getAccountStatements() {
 		return accountStatements;
 	}
 	
