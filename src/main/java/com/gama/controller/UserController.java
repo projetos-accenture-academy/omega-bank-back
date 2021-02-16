@@ -5,7 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Valid;
+
+//import javax.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gama.model.Usuario;
-import com.gama.repository.UsuarioRepository;
+
 import com.gama.service.UsuarioService;
 
 
@@ -35,7 +36,7 @@ public class UserController  {
 	
 	
 	@PostMapping()
-	public void post(@RequestBody @Valid Usuario user){
+	public void post(@RequestBody Usuario user){
 		try {
 			usuarioService.salvarUsuario(user);
 		} catch (Exception e) {
