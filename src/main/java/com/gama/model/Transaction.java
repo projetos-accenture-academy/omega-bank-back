@@ -62,6 +62,16 @@ public class Transaction {
 	}
 	
 	
+	public Transaction(AccountPlan accountPlan, Account sourceAccount, Account destinationAccount, LocalDate date,
+			Double value, String description) {
+		
+		this.accountPlan = accountPlan;
+		this.sourceAccount = sourceAccount;
+		this.destinationAccount = destinationAccount;
+		this.date = date;
+		this.value = value;
+		this.description = description;
+	}
 
 	public Long getId() {
 		return id;
@@ -110,6 +120,7 @@ public class Transaction {
 	public AccountPlan getAccountPlan() {
 		return accountPlan;
 	}
+
 
 	public void setAccountPlan(AccountPlan accountPlan) {
 		this.accountPlan = accountPlan;
