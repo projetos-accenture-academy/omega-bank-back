@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gama.exceptions.AccountPlanAlreadyExistsException;
 import com.gama.model.AccountPlan;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 import com.gama.repository.AccountPlanRepository;
 import com.gama.utils.Validator;
 
@@ -59,7 +59,7 @@ public class AccountPlanService {
 	 * @return Lista de Planos de Conta de um Usuário
 	 * @throws Exception
 	 */
-	public List<AccountPlan> getAccountPlansByUser(Usuario user) throws Exception
+	public List<AccountPlan> getAccountPlansByUser(User user) throws Exception
 	{
 		Validator.isEmptyValue(user, "Não é possível obter uma lista de planos de conta: referência nula de usuário.");
 		return accPlanRepo.findByUser(user);

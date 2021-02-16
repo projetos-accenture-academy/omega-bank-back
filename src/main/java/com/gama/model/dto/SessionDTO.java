@@ -5,14 +5,14 @@ import java.util.List;
 
 import com.gama.model.Account;
 import com.gama.model.AccountPlan;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 
 
 public class SessionDTO {
 	private String token;
 	private LocalDateTime tokenExpirationTime;
 	private LocalDateTime tokenExpeditionTime;
-	private Usuario user;
+	private User user;
 	private List<Account> accounts;
 	private List<AccountPlan> plans;
 	
@@ -20,7 +20,7 @@ public class SessionDTO {
 		
 	}
 	
-	public SessionDTO(Usuario user, String token, LocalDateTime tokenExpirationTime, LocalDateTime tokenExpeditionTime, List<Account> accounts, List<AccountPlan> plans ) {
+	public SessionDTO(User user, String token, LocalDateTime tokenExpirationTime, LocalDateTime tokenExpeditionTime, List<Account> accounts, List<AccountPlan> plans ) {
 		super();
 		this.user = user;
 		this.token = token;
@@ -31,11 +31,11 @@ public class SessionDTO {
 	}
 
 
-	public Usuario getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Usuario user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

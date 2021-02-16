@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gama.model.Usuario;
+import com.gama.model.User;
 
-import com.gama.service.UsuarioService;
+import com.gama.service.UserService;
 
 
 
@@ -31,12 +31,12 @@ public class UserController  {
 
 	@Autowired
 	
-	private UsuarioService usuarioService;
+	private UserService usuarioService;
 	
 	
 	
 	@PostMapping()
-	public void post(@RequestBody Usuario user){
+	public void post(@RequestBody User user){
 		try {
 			usuarioService.salvarUsuario(user);
 		} catch (Exception e) {
@@ -47,7 +47,7 @@ public class UserController  {
 	
 	
 	@PutMapping()
-	public void put(@RequestBody Usuario user){
+	public void put(@RequestBody User user){
 		
 		try {
 			usuarioService.alterarUsuario(user);
@@ -58,7 +58,7 @@ public class UserController  {
 	}
 	
 	@GetMapping(path = "/{usuario}") //@PathVariable
-	public Optional<Usuario> listar(@PathVariable String usuario){
+	public Optional<User> listar(@PathVariable String usuario){
 		System.out.println("Buscando usuario " + usuario);
 		return usuarioService.findUsuarioByLogin(usuario);
 	}

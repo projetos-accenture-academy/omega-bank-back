@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.gama.enums.TipoConta;
 import com.gama.model.Account;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Integer> {
@@ -21,7 +21,7 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 
 	Account findByNumero(String number);
 	
-	List<AccountTypesInterface> findTypesByUsuarioAndNumero(Usuario usuario, String numero);	
+	List<AccountTypesInterface> findTypesByUsuarioAndNumero(User usuario, String numero);	
 	List<Account> findByUsuarioCpf(String cpf);
-	List<Account> findByUsuario(Usuario user);
+	List<Account> findByUsuario(User user);
 }

@@ -11,7 +11,7 @@ import com.gama.exceptions.AccountAlreadyExistsException;
 import com.gama.exceptions.AccountDoesNotExistsException;
 import com.gama.exceptions.BalanceNotEnoughException;
 import com.gama.model.Account;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 import com.gama.repository.AccountRepository;
 import com.gama.utils.Validator;
 
@@ -91,7 +91,7 @@ public class AccountService{
 	 * @return List<Conta>
 	 * @throws Exception  Se o parâmetro de busca "usuario" for null
 	 */
-	public List<Account> getAccountsByUser(Usuario usuario) throws Exception {
+	public List<Account> getAccountsByUser(User usuario) throws Exception {
 		Validator.isEmptyValue(usuario, "Não é possível obter uma lista de contas através de uma referência nula de usuário");
 		return accountRepository.findByUsuario(usuario);
 	}
