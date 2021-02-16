@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.gama.enums.TransactionType;
 import com.gama.model.Account;
 import com.gama.model.AccountPlan;
+import com.gama.model.Transaction;
 
 public class TransactionDTO {
 	private Long id;
@@ -31,6 +32,39 @@ public class TransactionDTO {
 		this.value = value;
 		this.description = description;
 	}
+	
+	public static TransactionDTO transformToDTO(Transaction t) throws IllegalArgumentException, Exception
+	{
+		//get the transaction type based on which accounts are null
+		if(t.getDestinationAccount()==null && t.getSourceAccount()==null)
+		{
+			throw new IllegalArgumentException("Error: Transaction cannot have source and destination accounts as null");
+		}
+		else
+		{
+			TransactionType tt;
+			if(t.getDestinationAccount()==null)//money is leaving account, it's a Debit
+			{
+				tt= TransactionType.D;
+			}
+			else if(t.getSourceAccount()==null)//money is entering account, it's a receipt
+			{
+				tt = TransactionType.R;
+			}
+			else//both are not null, it's a transfer
+			{
+				tt= TransactionType.T;
+			}
+			
+			TransactionDTO newT = new TransactionDTO(t.getId(), tt, t.getAccountPlan(), t.getSourceAccount(), 
+									t.getDestinationAccount(), t.getDate(), t.getValue(), t.getDescription());
+			return newT;
+			
+		}
+		
+		
+	}
+	
 
 
 	public Long getId() {
