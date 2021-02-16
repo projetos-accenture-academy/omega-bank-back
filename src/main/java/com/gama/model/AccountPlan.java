@@ -47,7 +47,6 @@ public class AccountPlan {
 	}
 
 
-
 	public Integer getId() {
 		return id;
 	}

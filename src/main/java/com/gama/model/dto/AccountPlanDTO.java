@@ -1,5 +1,6 @@
 package com.gama.model.dto;
 
+import com.gama.model.AccountPlan;
 import com.gama.model.Usuario;
 
 public class AccountPlanDTO {
@@ -19,6 +20,12 @@ public class AccountPlanDTO {
 		this.id=id;
 		this.user=user;
 		this.description=description;
+	}
+	
+	public static AccountPlanDTO transformToDTO(AccountPlan ap)
+	{
+		return new AccountPlanDTO(ap.getId(), ap.getuser(), ap.getdescription());
+		
 	}
 
 	public Integer getId() {
