@@ -6,5 +6,4 @@ public class UsuarioNuloException extends Exception {
 		super("O usuário da conta não pode ser nulo.");
 	}
 
-
 }

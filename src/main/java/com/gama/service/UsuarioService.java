@@ -5,38 +5,43 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.gama.model.Usuario;
+import com.gama.model.User;
 import com.gama.repository.UsuarioRepository;
+import com.gama.utils.UserValidator;
 
 @Component
 public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	private UserValidator userValidator;
 
-	public Usuario salvarUsuario(Usuario user) throws Exception {
+	public User salvarUsuario(User user) throws Exception {
+		userValidator = new UserValidator(user);
 		if (usuarioRepository.existsById(user.getId())) {
 			throw new Exception("Usuário já cadastrado!");
-		} else if (!user.valid()) {
+		} else if (!userValidator.valid()) {
 			throw new Exception(
-					String.format("Falha ao inserir usuário: {0}{1}", System.lineSeparator(), user.getListError()));
+					String.format("Falha ao inserir usuário: {0}{1}", System.lineSeparator(), userValidator.getListError()));
 		} else {
 			return usuarioRepository.save(user);
 		}
 	}
 	
-	public Usuario alterarUsuario(Usuario user) throws Exception {
+	public User alterarUsuario(User user) throws Exception {
+		userValidator = new UserValidator(user);
 		if (!usuarioRepository.existsById(user.getId())) {
 			throw new Exception("Usuário não cadastrado!");
-		} else if (!user.valid()) {
+		} else if (!userValidator.valid()) {
 			throw new Exception(
-					String.format("Falha ao alterar usuário: {0}{1}", System.lineSeparator(), user.getListError()));
+					String.format("Falha ao alterar usuário: {0}{1}", System.lineSeparator(), userValidator.getListError()));
 		} else {
 			return usuarioRepository.save(user);
 		}
 	}
 	
-	public void deletarUsuario(Usuario user) {
+	public void deletarUsuario(User user) {
 		usuarioRepository.delete(user);
 	}
 
@@ -44,15 +49,15 @@ public class UsuarioService {
 		usuarioRepository.deleteById(id);
 	}
 
-	public Optional<Usuario> findUsuarioById(int id) {
+	public Optional<User> findUsuarioById(int id) {
 		return usuarioRepository.findById(id);
 	}
 
-	public Optional<Usuario> findUsuarioByLogin(String login) {
+	public Optional<User> findUsuarioByLogin(String login) {
 		return usuarioRepository.findByLogin(login);
 	}
 
-	public Iterable<Usuario> FindAllUsuarios() {
+	public Iterable<User> FindAllUsuarios() {
 		return usuarioRepository.findAll();
 	}
 

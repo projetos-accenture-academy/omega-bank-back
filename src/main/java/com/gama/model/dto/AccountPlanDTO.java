@@ -1,11 +1,11 @@
 package com.gama.model.dto;
 
-import com.gama.model.Usuario;
+import com.gama.model.User;
 
 public class AccountPlanDTO {
 
 	private Integer id;
-	private Usuario user;
+	private User user;
 	private String description;
 	
 	
@@ -14,7 +14,7 @@ public class AccountPlanDTO {
 		
 	}
 	
-	public AccountPlanDTO(Integer id, Usuario user, String description)
+	public AccountPlanDTO(Integer id, User user, String description)
 	{
 		this.id=id;
 		this.user=user;
@@ -25,11 +25,11 @@ public class AccountPlanDTO {
 		return id;
 	}
 
-	public Usuario getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Usuario user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

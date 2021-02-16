@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.gama.model.Account;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 
 
 public class SessionDTO {
 	private String token;
 	private LocalDateTime tokenExpirationDate;
-	private Usuario user;
+	private User user;
 	private List<Account> accounts;
 
 	// TODO: Lista de plano de contas
@@ -19,7 +19,7 @@ public class SessionDTO {
 		
 	}
 	
-	public SessionDTO(Usuario user, String token, LocalDateTime tokenExpirationDate, List accounts) {
+	public SessionDTO(User user, String token, LocalDateTime tokenExpirationDate, List accounts) {
 		super();
 		this.user = user;
 		this.token = token;
@@ -28,11 +28,11 @@ public class SessionDTO {
 	}
 
 
-	public Usuario getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Usuario user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

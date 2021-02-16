@@ -30,6 +30,7 @@ public class Transaction {
 	
 	@NotNull
 	@JoinColumn(name = "id_plano_conta")
+	@ManyToOne
 	private AccountPlan accountPlan;
 	
 	//Is null when it's a deposit
@@ -52,16 +53,10 @@ public class Transaction {
 	
 	@Column
 	private String description;
-
-	
-	
 	
 	public Transaction()
-	{
-		
-	}
-	
-	
+	{		
+	}	
 
 	public Long getId() {
 		return id;

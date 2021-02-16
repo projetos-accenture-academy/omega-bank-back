@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.gama.model.Account;
 import com.gama.model.AccountPlan;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 import com.gama.repository.AccountPlanRepository;
 import com.gama.repository.AccountRepository;
 import com.gama.repository.UsuarioRepository;
@@ -31,7 +31,7 @@ public class Application {
 	public CommandLineRunner run(AccountRepository bean) throws Exception {
 		return args -> {
 			System.out.println("\nIniciando o sistema...");
-			Usuario u = new Usuario("login", "123456", "Usuario", "000.003.003-99");
+			User u = new User("login", "123456", "Usuario", "00000300399");
 			usr.save(u);
 			Account account = new Account(u, "login");
 
