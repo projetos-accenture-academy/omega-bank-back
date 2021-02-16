@@ -11,18 +11,12 @@ import org.springframework.stereotype.Repository;
 import com.gama.enums.TransactionType;
 import com.gama.model.Account;
 import com.gama.model.Transaction;
+import com.gama.utils.CategorizedTransactionAuxiliary;
 
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> 
-{
-	//Used to get the sum of values from an account, categorized by account plan
-	interface TransactionCategorizedSumInterface
-	{
-		public static final Double valueSum = null;
-		public static final String transactionTypeDescription = "";
-	}
-	
+{	
 	boolean existsById(Long id);
 	Transaction findById(Long id);
 	
@@ -42,7 +36,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 									+ "( SELECT * FROM (SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta "
 									+ "from lancamentos l where l.id_conta_destino= :id_conta and data between :start_date and :end_date "
 									+ "GROUP BY id_plano_conta) as x LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y;")
-	List<TransactionCategorizedSumInterface> findIngoingValueSumByCategorizedAccountPlan(
+	List<CategorizedTransactionAuxiliary> findIngoingValueSumByCategorizedAccountPlan(
 											@Param("id_conta") Long idContaOrigem,
 											@Param("start_date") LocalDate data_start, 
 											@Param("end_date") LocalDate data_end);
@@ -55,7 +49,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 									+ "( SELECT * FROM (SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta "
 									+ "from lancamentos l where l.id_conta_origem= :id_conta and data between :start_date and :end_date "
 									+ "GROUP BY id_plano_conta) as x LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y;")
-	List<TransactionCategorizedSumInterface> findOutgoingValueSumByCategorizedAccountPlan(
+	List<CategorizedTransactionAuxiliary> findOutgoingValueSumByCategorizedAccountPlan(
 											@Param("id_conta") Long idContaOrigem,
 											@Param("start_date") LocalDate data_start, 
 											@Param("end_date") LocalDate data_end);

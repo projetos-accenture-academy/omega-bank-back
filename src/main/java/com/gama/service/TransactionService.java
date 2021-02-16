@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.gama.enums.TransactionType;
 import com.gama.exceptions.TransactionAlreadyExistsException;
 import com.gama.model.Account;
 import com.gama.model.Transaction;
 import com.gama.model.dto.TransactionDTO;
 import com.gama.repository.TransactionRepository;
+import com.gama.utils.CategorizedTransactionAuxiliary;
 import com.gama.utils.Validator;
 
 @Component
@@ -18,32 +20,50 @@ public class TransactionService {
 	private TransactionRepository transactionRepository;
 	
 	/**
-	 * Realiza a inserção de um Lançamento
+	 * Realiza a inserção de um Lançamento (Não é permitido atualização de um Lançamento)
 	 * 
-	 * @param Lançamento a ser inserido
+	 * @param transaction Lançamento a ser inserido
+	 * @param transactionType Tipo de lançamento a ser inserido
 	 * @throws LançamentoExistenteException
 	 */
-	public void saveTransaction(TransactionDTO transaction) throws IllegalArgumentException, TransactionAlreadyExistsException, Exception
+	public void addTransaction(Transaction transaction, TransactionType transactionType) throws IllegalArgumentException, TransactionAlreadyExistsException, Exception
 	{
 		if(transaction !=null)
 		{
-			
-			
 			Validator.isEmptyValue(transaction.getAccountPlan(), "O Lançamento necessita de um tipo definido");
 			Validator.isEmptyValue(transaction.getDate(), "O Lançamento necessita de uma data definida");
 			Validator.isEmptyValue(transaction.getValue(), "O Lançamento necessita de um valor definido");
 			
 			//Validates null accounts
 			Validator.isEmptyValue(transaction.getDestinationAccount()==null && transaction.getSourceAccount()==null, 
-									"O Lançamento necessita de umdefinido");
+									"O Lançamento necessita de ao menos uma conta definida");
 			
+			//Based on transaction type, check if the source/destination value
+			switch(transactionType)
+			{
+			case T:
+				Validator.isEmptyValue(transaction.getDestinationAccount()==null || transaction.getSourceAccount()==null, 
+					"O Lançamento(Tranferência) necessita de contas de origem e destino definidas");
+				break;
+			case D:
+				Validator.isEmptyValue(transaction.getDestinationAccount()==null && transaction.getSourceAccount()!=null, 
+						"O Lançamento(Despesa) necessita de conta de origem definida e destino nula");
+				break;
+			case R:
+				Validator.isEmptyValue(transaction.getDestinationAccount()!=null && transaction.getSourceAccount()==null, 
+						"O Lançamento(Despesa) necessita de conta de origem nula e destino definida");
+				break;
+			default:
+				break;
+				
+			}
 			
+			//TODO: check if this may cause an error
 			boolean lancamentoExistente = transactionRepository.existsById(transaction.getId());
 			
-			if(!lancamentoExistente)
+			if(!lancamentoExistente) //There cannot be an update, only an insertion
 			{
-				//TODO
-				//transactionRepository.save(transaction);
+				transactionRepository.save(transaction);
 			}
 			else
 			{
@@ -58,7 +78,7 @@ public class TransactionService {
 	 * @param id
 	 * @return Um Objeto Lançamento com o id especificado
 	 */
-	public Transaction getLancamento(Long id)
+	public Transaction getTransaction(Long id)
 	{
 		return transactionRepository.findById(id);
 	}
@@ -69,7 +89,7 @@ public class TransactionService {
 	 * Obtém todos os lançamentos existentes
 	 * @return Uma lista com todos os lançamentos existentes na base de dados
 	 */
-	public Iterable<Transaction> getAllLancamentos()
+	public Iterable<Transaction> getAllTransactions()
 	{
 		return transactionRepository.findAll();
 	}
@@ -105,13 +125,25 @@ public class TransactionService {
 	}
 	
 	/**
+	 * Obtém todos os lançamentos dentro de um intervalo de datas
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public Iterable<Transaction> getTransactionsByDateRange(LocalDate startDate, LocalDate endDate)
+	{
+		return transactionRepository.findByDateBetween(startDate, endDate);
+	}
+	
+	
+	/**
 	 * Obtém todos os lançamentos de uma conta origem específica dentro de um intervalo de datas
 	 * @param sourceAccount ID da conta origem dos Lançamentos
 	 * @param startDate Data de início da busca
 	 * @param endDate Data de fim da busca
 	 * @return Lista com todos os lançamentos entre as datas de busca com a conta de origem requisitada
 	 */
-	public Iterable<Transaction> getLancamentoByContaOrigemAndDataBetween(Account sourceAccount, LocalDate startDate, LocalDate endDate)
+	public Iterable<Transaction> getTransactionsBySourceAccountAndDateBetween(Account sourceAccount, LocalDate startDate, LocalDate endDate)
 	{
 		return transactionRepository.findBySourceAccountAndDateBetween(sourceAccount, startDate, endDate);
 	}
@@ -124,13 +156,36 @@ public class TransactionService {
 	 * @param endDate Data de fim da busca
 	 * @return Lista com todos os lançamentos entre as datas de busca com a conta de destino requisitada
 	 */
-	public Iterable<Transaction> getLancamentoByContaDestinoAndDataBetween(Account destinationAccount, LocalDate startDate, LocalDate endDate)
+	public Iterable<Transaction> getTransactionsByDestinationAccountAndDateBetween(Account destinationAccount, LocalDate startDate, LocalDate endDate)
 	{
-		return transactionRepository.findBySourceAccountAndDateBetween(destinationAccount, startDate, endDate);
+		return transactionRepository.findByDestinationAccountAndDateBetween(destinationAccount, startDate, endDate);
 	}
 	
 	
+	/**
+	 * Retorna uma lista com a soma dos valores dos lançamentos que entraram em uma determinada conta, categorizados por plano de 
+	 * conta, dentro de um intervalo de tempo
+	 * @param idIngoingAccount ID numérico da conta a ser buscada
+	 * @param startDate Data de início da busca
+	 * @param endDate Data de fim da busca
+	 * @return
+	 */
+	public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan(Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
+	{
+		return transactionRepository.findIngoingValueSumByCategorizedAccountPlan(idIngoingAccount, startDate, endDate);
+	}
 	
-	
+	/**
+	 * Retorna uma lista com a soma dos valores dos lançamentos que saíram de uma determinada conta, categorizados por plano de 
+	 * conta, dentro de um intervalo de tempo
+	 * @param idOutgoingAccount ID numérico da conta a ser buscada
+	 * @param startDate Data de início da busca
+	 * @param endDate Data de fim da busca
+	 * @return
+	 */
+	public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan(Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
+	{
+		return transactionRepository.findOutgoingValueSumByCategorizedAccountPlan(idOutgoingAccount, startDate, endDate);
+	}
 	
 }
