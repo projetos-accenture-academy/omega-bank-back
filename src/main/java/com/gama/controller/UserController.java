@@ -24,9 +24,9 @@ import com.gama.service.UsuarioService;
 
 
 
-
+@Controller
 @RestController
-@RequestMapping(path = "/usuario")
+@RequestMapping(path = "/user")
 public class UserController  {
 
 	@Autowired
@@ -36,9 +36,9 @@ public class UserController  {
 	
 	
 	@PostMapping()
-	public void post(@RequestBody Usuario usuario){
+	public void post(@RequestBody Usuario user){
 		try {
-			this.usuarioService.salvarUsuario(usuario);
+			usuarioService.salvarUsuario(user);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,10 +47,10 @@ public class UserController  {
 	
 	
 	@PutMapping()
-	public void put(@RequestBody Usuario usuario){
+	public void put(@RequestBody Usuario user){
 		
 		try {
-			usuarioService.alterarUsuario(usuario);
+			usuarioService.alterarUsuario(user);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
