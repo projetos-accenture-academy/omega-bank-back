@@ -32,8 +32,14 @@ public class LoginController {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-	@PostMapping
-	public SessionDTO logar(Login login) throws Exception {
+	/**
+	 * Realiza o login de um usuário
+	 * @param login Login de um Usuário
+	 * @return JSON com informações de sessão do usuário, em caso positivo de login
+	 * @throws Exception
+	 */
+	@PostMapping()
+	public SessionDTO logar(@RequestBody Login login) throws Exception {
 
 		if (login == null || login.getLogin().isEmpty() || login.getSenha().isEmpty()) {
 			throw new RuntimeException("Login e senha são requeridos");
