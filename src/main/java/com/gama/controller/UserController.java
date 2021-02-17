@@ -30,6 +30,7 @@ public class UserController {
 
 	@Autowired
 	private ModelMapper modelMapper = new ModelMapper();
+	
 	@PostMapping(produces="application/json", consumes="application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public Object incluir(@RequestBody UserDTO userDTO) {
@@ -51,26 +52,31 @@ public class UserController {
 	}
 
 	@GetMapping(produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
 	public List<User> listarTodos() {
 		return usuarioService.FindAllUsuarios();
 	}
 	
 	@GetMapping(path = "/{id}", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
 	public Optional<User> buscarPorId(int id) {
 		return usuarioService.findUsuarioById(id);
 	}
 	
 	@GetMapping(path = "/{login}", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
 	public Optional<User> buscarPorLogin(String login) {
 		return usuarioService.findUsuarioByLogin(login);
 	}
 	
 	@DeleteMapping(path = "/{user}") 
+	@ResponseStatus(value = HttpStatus.OK)
 	public void excluir(User user) {
 		usuarioService.deletarUsuario(user);
 	}
 
 	@DeleteMapping(path = "/{id}") 
+	@ResponseStatus(value = HttpStatus.OK)
 	public void excluirPorId(Integer id) {
 		usuarioService.deletarUsuarioById(id);
 	}

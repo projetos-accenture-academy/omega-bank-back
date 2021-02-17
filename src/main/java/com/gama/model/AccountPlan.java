@@ -31,9 +31,8 @@ public class AccountPlan {
 	public AccountPlan()
 	{
 		
-	}
-	
-	
+	}	
+		
 	
 	/**
 	 * Cria um plano de conta criado por um Usuário específico, com uma descrição não-nula

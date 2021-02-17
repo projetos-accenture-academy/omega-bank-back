@@ -24,7 +24,7 @@ public class User {
 	@Column(nullable = false, length = 20)
 	private String login;
 
-	@Column(nullable = false, length = 8)
+	@Column(nullable = false, length = 255)
 	private String senha;
 
 	@Column(nullable = false, length = 30)

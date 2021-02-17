@@ -2,7 +2,6 @@ package com.gama.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.gama.model.User;
 
 /**
@@ -16,7 +15,7 @@ public class UserValidator {
 	
 	private final List<String> listError = new ArrayList<String>();
 
-	public  List<String> getListError() {
+	public List<String> getListError() {
 		return listError;
 	}
 	
@@ -45,12 +44,7 @@ public class UserValidator {
 			listError.add("A senha do usuário deve conter no mínimo 6 caracteres.");
 			return false;
 		}
-		
-		if (user.getSenha().length() > 8) {
-			listError.add("A senha do usuário deve conter no máximo 8 caracteres.");
-			return false;
-		}	
-		
+						
 		if (Validator.isEmptyValue(user.getNome())) {
 			listError.add("O nome do usuário deve ser informado.");
 			return false;
@@ -90,8 +84,7 @@ public class UserValidator {
 	}	
 	
 	public static boolean isNumeric(String str) {
-	    if (str == null) return true;
-	    return str.matches("?\\d+");
+	    return str.chars().allMatch(Character::isDigit);
 	}
 	
 }

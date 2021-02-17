@@ -52,15 +52,9 @@ public class Transaction {
 	
 	@Column
 	private String description;
-
-	
-	
 	
 	public Transaction()
-	{
-		
-	}
-	
+	{ }	
 	
 	public Transaction(AccountPlan accountPlan, Account sourceAccount, Account destinationAccount, LocalDate date,
 			Double value, String description) {

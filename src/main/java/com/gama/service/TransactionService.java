@@ -9,13 +9,13 @@ import com.gama.enums.TransactionType;
 import com.gama.exceptions.TransactionAlreadyExistsException;
 import com.gama.model.Account;
 import com.gama.model.Transaction;
-import com.gama.model.dto.TransactionDTO;
 import com.gama.repository.TransactionRepository;
 import com.gama.utils.CategorizedTransactionAuxiliary;
 import com.gama.utils.Validator;
 
 @Component
 public class TransactionService {
+	
 	@Autowired
 	private TransactionRepository transactionRepository;
 	
@@ -91,8 +91,7 @@ public class TransactionService {
 	{
 		return transactionRepository.findById(id);
 	}
-	
-	
+		
 	
 	/**
 	 * Obtém todos os lançamentos existentes
