@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gama.exceptions.AccountPlanAlreadyExistsException;
 import com.gama.model.AccountPlan;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 import com.gama.model.dto.AccountPlanDTO;
 import com.gama.repository.AccountPlanRepository;
 import com.gama.service.AccountPlanService;
@@ -50,7 +50,7 @@ public class AccountPlanController {
 	 * @throws Exception 
 	 */
 	@GetMapping("/{user}")
-	public List<AccountPlan> getUsersAccountPlans(@PathVariable Usuario user) throws Exception
+	public List<AccountPlan> getUsersAccountPlans(@PathVariable User user) throws Exception
 	{
 		return apService.getAccountPlansByUser(user);
 	}
