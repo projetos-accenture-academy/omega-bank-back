@@ -7,6 +7,8 @@
 
 Bem vindo ao repositório do grupo Ômega, abaixo estão descritos os meios de acesso à informações sobre o projeto desenvolvido, e logo em seguida uma exemplificação do fluxo de uso da nossa API;
 
+
+
 ### Mapa do site:
 
 * Na página [Introdução](https://github.com/projetos-accenture-academy/omega-bank-back/wiki/Introdução) está uma breve introdução do escopo base do projeto.
@@ -15,10 +17,15 @@ Bem vindo ao repositório do grupo Ômega, abaixo estão descritos os meios de a
 * Na página [Tecnologias](https://github.com/projetos-accenture-academy/omega-bank-back/wiki/TEcnologias) estão os links do que utilizamos para desenvolver a API.
 
 
+
+
 ### Fluxo de uso da API REST
 
 
-### 🛠 Como executar localmente
+
+
+
+### Como executar localmente
 
 -   Faça download do projeto e extraia para um diretório em sua máquina
 -   Utilizando uma IDE como o Eclipse, importe o projeto como um projeto Maven
