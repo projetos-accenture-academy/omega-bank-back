@@ -22,8 +22,7 @@ public class AccountDTO {
 		this.description = description;
 		this.accountStatements = accountStatements;
 		this.numberOfStatements = numberOfStatements;
-	}
-	
+	}	
 	
 	
 	public Integer getNumberOfStatements() {
