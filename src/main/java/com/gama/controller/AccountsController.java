@@ -1,6 +1,6 @@
 package com.gama.controller;
 
-package com.gama.controller;
+
 
 
 import java.util.Optional;
@@ -23,7 +23,60 @@ import com.gama.model.Account;
 
 import com.gama.service.AccountService;
 
+
+
+
+@RestController
+@RequestMapping(path = "/account")
 public class AccountsController {
+
+	private AccountService service;
+	
+	@Autowired
+	
+	
+	
+	
+	@PostMapping()
+	public void post(@RequestBody Account account){
+		try {
+			service.saveAccount(account);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@PutMapping()
+	public void put(@RequestBody Integer account){
+		
+		try {
+			service.updateAccountBalance(account, null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	/*
+   
+	 Embaixo estão os que podem ser implementados, acima ainda não testes (rauL)
+
+	*/
+	
+	@GetMapping(path = "/{account}") //@PathVariable
+	public void put(@PathVariable String account){
+// esses resources ainda estão com problema na estrutura
+	}
+	
+	@DeleteMapping(path = "/{account}") //@PathVariable
+	public void delete(@PathVariable Integer account) {
+		
+			// esses resources ainda estão com problema na estrutura
+		
+	}
 	
 
 }
