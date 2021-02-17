@@ -18,7 +18,7 @@ public class UserDTO {
 	
     @ApiModelProperty(value = "Telefone", example = "6735620000")
 	private String telefone;	
-
+		
 	public String getLogin() {
 		return login;
 	}
@@ -57,6 +57,5 @@ public class UserDTO {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
-	}
-	
+	}		
 }

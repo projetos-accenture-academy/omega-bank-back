@@ -33,6 +33,7 @@ public class TransactionController {
 	@Autowired
 	private ModelMapper modelMapper = new ModelMapper();
 	
+	@CrossOrigin
 	@PostMapping(produces="application/json", consumes="application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public String novaTransacao(@RequestBody TransactionDTO transactionDTO, TransactionType type) {
@@ -44,18 +45,19 @@ public class TransactionController {
 		}
 	}
 	
+	@CrossOrigin
 	@GetMapping(path = "/{id}", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public TransactionDTOResponse getTransaction(Long id)	{
 		return modelMapper.map(transactionService.getTransaction(id), TransactionDTOResponse.class);
 	}
 
-	@GetMapping(path = "/all", produces="application/json")
-	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<Transaction> getAllTransactions()
-	{
-		return transactionService.getAllTransactions();
-	}
+	// @GetMapping(path = "/all", produces="application/json")
+	// @ResponseStatus(value = HttpStatus.OK)
+	// public Iterable<Transaction> getAllTransactions()
+	// {
+		// return transactionService.getAllTransactions();
+	// }
 
 	@GetMapping(path = "/{sourceAccount}", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -64,19 +66,19 @@ public class TransactionController {
 		return transactionService.getTransactionsBySourceAccount(sourceAccount);
 	}
 	
-	@GetMapping(path = "/{destinationAccount}", produces="application/json")
-	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<Transaction> getTransactionsByDestinationAccount(Account destinationAccount)
-	{
-		return transactionService.getTransactionsByDestinationAccount(destinationAccount);
-	}
+	// @GetMapping(path = "/{destinationAccount}", produces="application/json")
+	// @ResponseStatus(value = HttpStatus.OK)
+	// public Iterable<Transaction> getTransactionsByDestinationAccount(Account destinationAccount)
+	// {
+		// return transactionService.getTransactionsByDestinationAccount(destinationAccount);
+	// }
 	
-	@GetMapping(path = "/{date}", produces="application/json")
-	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<Transaction> getTransactionsByDate(LocalDate date)
-	{
-		return transactionService.getTransactionsByDate(date);
-	}
+	// @GetMapping(path = "/{date}", produces="application/json")
+	// @ResponseStatus(value = HttpStatus.OK)
+	// public Iterable<Transaction> getTransactionsByDate(LocalDate date)
+	// {
+		// return transactionService.getTransactionsByDate(date);
+	// }
 	
 	@GetMapping(path = "/{byDateRange}", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -85,32 +87,32 @@ public class TransactionController {
 		return transactionService.getTransactionsByDateRange(startDate, endDate);
 	}
 
-	@GetMapping(path = "/{byAccountSourceAndDate}", produces="application/json")
-	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<Transaction> getTransactionsBySourceAccountAndDateBetween(Account sourceAccount, LocalDate startDate, LocalDate endDate)
-	{
-		return transactionService.getTransactionsBySourceAccountAndDateBetween(sourceAccount, startDate, endDate);
-	}
+	// @GetMapping(path = "/{byAccountSourceAndDate}", produces="application/json")
+	// @ResponseStatus(value = HttpStatus.OK)
+	// public Iterable<Transaction> getTransactionsBySourceAccountAndDateBetween(Account sourceAccount, LocalDate startDate, LocalDate endDate)
+	// {
+		// return transactionService.getTransactionsBySourceAccountAndDateBetween(sourceAccount, startDate, endDate);
+	// }
 	
-	@GetMapping(path = "/{byAccountDestinationAndDate}", produces="application/json")
-	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<Transaction> getTransactionsByDestinationAccountAndDateBetween(Account destinationAccount, LocalDate startDate, LocalDate endDate)
-	{
-		return transactionService.getTransactionsByDestinationAccountAndDateBetween(destinationAccount, startDate, endDate);
-	}
+	// @GetMapping(path = "/{byAccountDestinationAndDate}", produces="application/json")
+	// @ResponseStatus(value = HttpStatus.OK)
+	// public Iterable<Transaction> getTransactionsByDestinationAccountAndDateBetween(Account destinationAccount, LocalDate startDate, LocalDate endDate)
+	// {
+		// return transactionService.getTransactionsByDestinationAccountAndDateBetween(destinationAccount, startDate, endDate);
+	// }
 	
-	@GetMapping(path = "/{inAccountPlan}", produces="application/json")
-	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan(Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
-	{
-		return transactionService.getIngoingTransactionsCategorizedByAccountPlan(idIngoingAccount, startDate, endDate);
-	}
+	// @GetMapping(path = "/{inAccountPlan}", produces="application/json")
+	// @ResponseStatus(value = HttpStatus.OK)
+	// public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan(Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
+	// {
+		// return transactionService.getIngoingTransactionsCategorizedByAccountPlan(idIngoingAccount, startDate, endDate);
+	// }
 	
-	@GetMapping(path = "/{outAccountSourceAndDate}", produces="application/json")
-	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan(Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
-	{
-		return transactionService.getOutgoingTransactionsCategorizedByAccountPlan(idOutgoingAccount, startDate, endDate);
-	}
+	// @GetMapping(path = "/{outAccountSourceAndDate}", produces="application/json")
+	// @ResponseStatus(value = HttpStatus.OK)
+	// public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan(Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
+	// {
+		// return transactionService.getOutgoingTransactionsCategorizedByAccountPlan(idOutgoingAccount, startDate, endDate);
+	// }
 
 }

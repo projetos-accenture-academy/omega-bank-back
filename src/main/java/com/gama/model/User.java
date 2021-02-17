@@ -14,6 +14,7 @@ import javax.persistence.Table;
  */
 
 @Entity
+@NoArgsConstructor
 @Table(name = "usuarios")
 public class User {
 
@@ -21,7 +22,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(nullable = false, length = 20)
+	@Column(unique = true, nullable = false, length = 20)
 	private String login;
 
 	@Column(nullable = false, length = 255)
@@ -35,9 +36,6 @@ public class User {
 	
 	@Column(length = 11)
 	private String telefone;
-
-	public User() {
-	}
 
 	public User(String login, String senha, String nome, String cpf, String telefone) {
 		this.login = login;
