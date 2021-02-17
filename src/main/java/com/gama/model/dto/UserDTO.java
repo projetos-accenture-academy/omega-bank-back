@@ -1,34 +1,23 @@
 package com.gama.model.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class UserDTO {
 
-	private int id;
-
+    @ApiModelProperty(value = "Login", example = "user01", required = true)
 	private String login;	
 
+    @ApiModelProperty(value = "Senha", required = true)
 	private String senha;
 
+    @ApiModelProperty(value = "Nome", example = "user", required = true)
 	private String nome;
 
+    @ApiModelProperty(value = "CPF", example = "11111111111", required = true)
 	private String cpf;
-
-	public UserDTO() {
-	}
-
-	public UserDTO(String login, String senha, String nome, String cpf) {
-		this.login = login;
-		this.senha = senha;
-		this.nome = nome;
-		this.cpf = cpf;
-	}
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+    @ApiModelProperty(value = "Telefone", example = "6735620000")
+	private String telefone;	
 
 	public String getLogin() {
 		return login;
@@ -61,4 +50,13 @@ public class UserDTO {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+	
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+	
 }

@@ -51,6 +51,7 @@ class UserTest {
 		usuario.setCpf("00000000100");
 		usuario.setLogin("acanuto");
 		usuario.setSenha("123456");
+		usuario.setTelefone("00981799939");
 		assertTrue(usuarioRepository.save(usuario) != null);		
 	}
 	
@@ -59,6 +60,7 @@ class UserTest {
 		usuario.setNome("Alessandra");
 		usuario.setCpf("00000000200");
 		usuario.setLogin("acanuto");
+		usuario.setTelefone("6799999");
 		usuario.setSenha("123");
 		assertFalse(usuarioRepository.save(usuario) == null, String.join(", ", userValidator.getListError()));
 	}

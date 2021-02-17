@@ -1,5 +1,6 @@
 package com.gama.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,33 +15,31 @@ public class UserService {
 
 	@Autowired
 	private UserRepository usuarioRepository;
-	
+
 	private UserValidator userValidator;
 
 	public User salvarUsuario(User user) throws Exception {
 		userValidator = new UserValidator(user);
-		if (usuarioRepository.existsById(user.getId())) {
+		if (usuarioRepository.existsById(user.getId() | 0)) {
 			throw new Exception("Usuário já cadastrado!");
 		} else if (!userValidator.valid()) {
-			throw new Exception(
-					String.format("Falha ao inserir usuário: {0}{1}", System.lineSeparator(), userValidator.getListError()));
+			throw new Exception("Falha ao inserir usuário: " + System.lineSeparator() +	userValidator.getListError());
 		} else {
 			return usuarioRepository.save(user);
 		}
 	}
-	
+
 	public User alterarUsuario(User user) throws Exception {
 		userValidator = new UserValidator(user);
 		if (!usuarioRepository.existsById(user.getId())) {
 			throw new Exception("Usuário não cadastrado!");
 		} else if (!userValidator.valid()) {
-			throw new Exception(
-					String.format("Falha ao alterar usuário: {0}{1}", System.lineSeparator(), userValidator.getListError()));
+			throw new Exception("Falha ao alterar usuário: " + System.lineSeparator() +	userValidator.getListError());
 		} else {
 			return usuarioRepository.save(user);
 		}
 	}
-	
+
 	public void deletarUsuario(User user) {
 		usuarioRepository.delete(user);
 	}
@@ -57,7 +56,7 @@ public class UserService {
 		return usuarioRepository.findByLogin(login);
 	}
 
-	public Iterable<User> FindAllUsuarios() {
+	public List<User> FindAllUsuarios() {
 		return usuarioRepository.findAll();
 	}
 

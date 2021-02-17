@@ -32,6 +32,9 @@ public class User {
 
 	@Column(unique = true, nullable = false, length = 11)
 	private String cpf;
+	
+	@Column(length = 11)
+	private String telefone;
 
 	public User() {
 	}
@@ -41,7 +44,7 @@ public class User {
 		this.senha = senha;
 		this.nome = nome;
 		this.cpf = cpf;
-	}
+	}	
 
 	public int getId() {
 		return id;
@@ -77,6 +80,14 @@ public class User {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+	
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 }
