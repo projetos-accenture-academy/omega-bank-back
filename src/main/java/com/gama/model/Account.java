@@ -40,7 +40,7 @@ public class Account {
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	@NotNull
-	private Usuario usuario;
+	private User usuario;
 	
 	
 	public Account() {
@@ -51,7 +51,7 @@ public class Account {
 	 * @param usuario
 	 * @throws UsuarioNuloException 
 	 */
-	public Account(Usuario usuario, String numero) {
+	public Account(User usuario, String numero) {
 
 		this.saldo = 0.0;
 		this.descricao = "Conta Corrente";
@@ -60,11 +60,11 @@ public class Account {
 		this.numero = numero;
 	}
 	
-	public Usuario getUsuario() {
+	public User getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario){
+	public void setUsuario(User usuario){
 		this.usuario = usuario;
 	}
 

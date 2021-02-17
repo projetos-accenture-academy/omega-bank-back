@@ -22,7 +22,7 @@ public class AccountPlan {
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	@NotNull
-	private Usuario user;
+	private User user;
 	
 	@Column(nullable = false, name = "descricao")
 	private String description;
@@ -31,16 +31,15 @@ public class AccountPlan {
 	public AccountPlan()
 	{
 		
-	}
-	
-	
+	}	
+		
 	
 	/**
 	 * Cria um plano de conta criado por um Usuário específico, com uma descrição não-nula
 	 * @param user
 	 * @param description
 	 */
-	public AccountPlan(Usuario user, String description)
+	public AccountPlan(User user, String description)
 	{
 		this.user=user;
 		this.description=description;
@@ -52,12 +51,12 @@ public class AccountPlan {
 	}
 
 
-	public Usuario getuser() {
+	public User getuser() {
 		return user;
 	}
 
 
-	public void setuser(Usuario user) {
+	public void setuser(User user) {
 		this.user = user;
 	}
 

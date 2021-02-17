@@ -8,6 +8,7 @@ import com.gama.model.AccountPlan;
 import com.gama.model.Transaction;
 
 public class TransactionDTO {
+	
 	private Long id;
 	private TransactionType transactionType;
 	private AccountPlan accountPlan;
@@ -16,10 +17,8 @@ public class TransactionDTO {
 	private LocalDate date;
 	private Double value;
 	private String description;
-	
-	
+		
 	public TransactionDTO() {}
-
 
 	public TransactionDTO(Long id, TransactionType transactionType, AccountPlan accountPlan, Account sourceAccount, 
 			Account destinationAccount, LocalDate date, Double value, String description) 

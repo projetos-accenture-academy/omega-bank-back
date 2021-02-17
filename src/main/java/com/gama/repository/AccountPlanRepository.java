@@ -3,7 +3,7 @@ package com.gama.repository;
 import org.springframework.stereotype.Repository;
 
 import com.gama.model.AccountPlan;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +15,11 @@ public interface AccountPlanRepository extends JpaRepository<AccountPlan, Intege
 
 	boolean existsById(Integer id);
 	boolean existsByDescription(String description);
-	boolean existsByUser(Usuario user);
-	boolean existsByUserAndDescription(Usuario user, String description);
+	boolean existsByUser(User user);
+	boolean existsByUserAndDescription(User user, String description);
 	
 	Optional<AccountPlan> findById(Integer id);
-	AccountPlan findByUserAndDescription(Usuario user, String description);
-	List<AccountPlan> findByUser(Usuario user);
+	AccountPlan findByUserAndDescription(User user, String description);
+	List<AccountPlan> findByUser(User user);
 	
 }

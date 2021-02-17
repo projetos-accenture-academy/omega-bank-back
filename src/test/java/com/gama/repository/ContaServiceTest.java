@@ -26,7 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.gama.exceptions.AccountAlreadyExistsException;
 import com.gama.model.Account;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 import com.gama.service.AccountService;
 
 @ExtendWith(SpringExtension.class)
@@ -39,14 +39,15 @@ public class ContaServiceTest {
     AccountService accountService;
    
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
-	static Usuario usuarioTeste;
+	static User usuarioTeste;
 	
 	@BeforeAll
 	static void init() {
 		System.out.println("Inicializando objetos de testes: ContaService");
 		usuarioTeste = new Usuario("aabc", "123456", "A", "00100200399", "21988829133");
+
 	}
 	
 	@BeforeEach
@@ -66,7 +67,7 @@ public class ContaServiceTest {
         assertEquals("A conta necessita de um usuário associado", exception.getMessage());
     	    	
         exception = assertThrows(Exception.class, () -> {
-        	accountService.saveAccount(new Account(new Usuario(), ""));
+        	accountService.saveAccount(new Account(new User(), ""));
         });
         
         assertEquals("A conta necessita de um usuário com login", exception.getMessage());
@@ -77,7 +78,7 @@ public class ContaServiceTest {
     @Test
     @DisplayName("Inibir a criação de conta sem tipo definido")
     public void criarContaSemTipoDefinido() throws Exception {  
-    	Usuario usuario = new Usuario();
+    	User usuario = new User();
     	usuario.setLogin("login");
         Account conta = new Account(usuario, "num123");
         
@@ -138,7 +139,7 @@ public class ContaServiceTest {
     @Order(1)
     @DisplayName("Criar conta para um novo usuário")
     public void criarConta() throws Exception {
-        Usuario usuarioCriado = usuarioRepository.save(usuarioTeste);
+        User usuarioCriado = usuarioRepository.save(usuarioTeste);
         
     	assertNotNull(usuarioCriado);
     	
@@ -152,7 +153,7 @@ public class ContaServiceTest {
     	
     	// Procura pelo usuário cadastrado no teste anterior para tentar adicionar uma nova conta
     	// com o mesmo número para este usuário
-    	Optional<Usuario> usuarioCriado = usuarioRepository.findByLogin(usuarioTeste.getLogin());
+    	Optional<User> usuarioCriado = usuarioRepository.findByLogin(usuarioTeste.getLogin());
     	Account conta = new Account(usuarioCriado.get(), usuarioCriado.get().getLogin());
 
     	assertNotNull(usuarioCriado);

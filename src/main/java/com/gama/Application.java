@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Bean;
 
 import com.gama.model.Account;
 import com.gama.model.AccountPlan;
-import com.gama.model.Usuario;
+import com.gama.model.User;
 import com.gama.repository.AccountPlanRepository;
 import com.gama.repository.AccountRepository;
 import com.gama.repository.AccountRepository.AccountTypesInterface;
-import com.gama.repository.UsuarioRepository;
+import com.gama.repository.UserRepository;
 import com.gama.service.AccountPlanService;
 
 @SpringBootApplication

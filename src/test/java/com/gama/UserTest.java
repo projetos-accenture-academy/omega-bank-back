@@ -16,57 +16,66 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.gama.model.Usuario;
-import com.gama.repository.UsuarioRepository;
+import com.gama.model.User;
+import com.gama.repository.UserRepository;
+import com.gama.utils.UserValidator;
+
+/**
+ * Testes unitários de usuário
+ * @author Alessandra
+ *
+ */
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = Replace.AUTO_CONFIGURED)
 @TestMethodOrder(OrderAnnotation.class)
-class UsuarioTest {
+class UserTest {
 
-	private Usuario usuario;
+	private User usuario;
+	private UserValidator userValidator;
 	
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UserRepository usuarioRepository;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		usuario = new Usuario();
+		usuario = new User();
+		userValidator = new UserValidator(usuario);
 	}
 
 	@Test
 	@Order(1)
 	void testAddUsuario() {
 		usuario.setNome("Alessandra");
-		usuario.setCpf("000.000.001-00");
+		usuario.setCpf("00000000100");
 		usuario.setLogin("acanuto");
 		usuario.setSenha("123456");
+		usuario.setTelefone("00981799939");
 		assertTrue(usuarioRepository.save(usuario) != null);		
 	}
 	
 	@Test
 	void testAddUsuarioInvalido() {
 		usuario.setNome("Alessandra");
-		usuario.setCpf("000.000.002-00");
+		usuario.setCpf("00000000200");
 		usuario.setLogin("acanuto");
+		usuario.setTelefone("6799999");
 		usuario.setSenha("123");
-		assertFalse(usuarioRepository.save(usuario) == null, String.join(", ", usuario.getListError()));
+		assertFalse(usuarioRepository.save(usuario) == null, String.join(", ", userValidator.getListError()));
 	}
 	
 	@Test
 	@Order(2)
 	void testAddUsuarioCadastrado() {
 		usuario.setNome("Alessandra");
-		usuario.setCpf("000.000.001-00");
+		usuario.setCpf("00000000100");
 		usuario.setLogin("acanuto");
 		usuario.setSenha("123456");
 
-		assertThrows(Exception.class, () -> {
-			
+		assertThrows(Exception.class, () -> {			
         	usuarioRepository.save(usuario);
         });
-
 				
 		assertFalse(usuarioRepository.existsById(usuario.getId()), "teste");
 	}
