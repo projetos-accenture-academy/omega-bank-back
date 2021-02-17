@@ -55,8 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers(SWAGGER_WHITELIST).permitAll()
 		.antMatchers("/login").permitAll()
-		.antMatchers(HttpMethod.GET, "/plans/**").hasAnyRole("ADMIN")
-		.antMatchers(HttpMethod.GET, "/user").hasAnyRole("USER")
+		.antMatchers(HttpMethod.GET, "/plan/**").hasAnyRole("USER")
+		.antMatchers(HttpMethod.GET, "/user/**").hasAnyRole("USER")
+		.antMatchers(HttpMethod.GET, "/transaction/**").hasAnyRole("USER")
 		//.anyRequest().authenticated().and().formLogin(); //POSSIBLE CONNECTION TYPE
 		//.anyRequest().authenticated().and().httpBasic() //POSSIBLE CONNECTION TYPE 
 		.and()

@@ -22,7 +22,7 @@ import com.gama.repository.AccountPlanRepository;
 import com.gama.service.AccountPlanService;
 
 @RestController
-@RequestMapping(path="/plans")
+@RequestMapping(path="/plan")
 public class AccountPlanController {
 	
 	@Autowired AccountPlanRepository apRepo;

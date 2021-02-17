@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gama.model.Login;
+import com.gama.model.User;
 import com.gama.model.dto.SessionDTO;
-import com.gama.model.Usuario;
-import com.gama.repository.UsuarioRepository;
+import com.gama.repository.UserRepository;
 import com.gama.security.JWTConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,7 +27,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RequestMapping("/login")
 public class LoginController {
 	@Autowired
-	private UsuarioRepository userRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
 	private PasswordEncoder encoder;
@@ -39,9 +39,9 @@ public class LoginController {
 			throw new RuntimeException("Login e senha são requeridos");
 		}
 
-		Optional<Usuario> optuser = userRepository.findByLogin(login.getLogin());
+		Optional<User> optuser = userRepository.findByLogin(login.getLogin());
 
-		Usuario usuario = optuser.get();
+		User usuario = optuser.get();
 
 		boolean senhaOk = encoder.matches(login.getSenha(),usuario.getSenha());
 

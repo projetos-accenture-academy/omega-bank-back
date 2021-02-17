@@ -39,11 +39,12 @@ public class User {
 	public User() {
 	}
 
-	public User(String login, String senha, String nome, String cpf) {
+	public User(String login, String senha, String nome, String cpf, String telefone) {
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
 		this.cpf = cpf;
+		this.telefone=telefone;
 	}	
 
 	public int getId() {

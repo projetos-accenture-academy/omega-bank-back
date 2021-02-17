@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.gama.exceptions.AccountPlanAlreadyExistsException;
 import com.gama.model.AccountPlan;
@@ -11,6 +12,7 @@ import com.gama.model.User;
 import com.gama.repository.AccountPlanRepository;
 import com.gama.utils.Validator;
 
+@Component
 public class AccountPlanService {
 	
 	@Autowired
