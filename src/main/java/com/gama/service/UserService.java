@@ -6,7 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.gama.enums.TipoConta;
+import com.gama.model.Account;
 import com.gama.model.User;
+import com.gama.repository.AccountRepository;
 import com.gama.repository.UserRepository;
 import com.gama.utils.UserValidator;
 
@@ -15,7 +18,10 @@ public class UserService {
 
 	@Autowired
 	private UserRepository usuarioRepository;
-
+	
+	@Autowired
+	private AccountService accountService;
+		
 	private UserValidator userValidator;
 
 	public User salvarUsuario(User user) throws Exception {
@@ -25,7 +31,15 @@ public class UserService {
 		} else if (!userValidator.valid()) {
 			throw new Exception("Falha ao inserir usuário: " + System.lineSeparator() +	userValidator.getListError());
 		} else {
-			return usuarioRepository.save(user);
+			User newUser = usuarioRepository.save(user);
+			
+			Account accountCC = new Account(newUser, TipoConta.CC);
+			accountService.saveAccount(accountCC);
+			
+			Account accountCB = new Account(newUser, TipoConta.CB);
+			accountService.saveAccount(accountCB);
+			
+			return newUser;
 		}
 	}
 
