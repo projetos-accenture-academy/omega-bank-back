@@ -24,7 +24,6 @@ import com.gama.security.JWTConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-@CrossOrigin(origins = "https://omegabank-backend.herokuapp.com/")
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -40,6 +39,7 @@ public class LoginController {
 	 * @return JSON com informações de sessão do usuário, em caso positivo de login
 	 * @throws Exception
 	 */
+	@CrossOrigin()
 	@PostMapping()
 	public SessionDTO logar(@RequestBody Login login) throws Exception {
 
