@@ -69,7 +69,6 @@ public class AccountPlanController {
 		return apService.getAccountPlanById(id);
 	}
 	
-	
 	/**
 	 * Adiciona um Plano de Conta de um usuário específico na base
 	 * @param accountPlanDTO Um DTO de entrada de Plano de Conta
