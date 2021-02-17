@@ -50,7 +50,7 @@ public class Transaction {
 	@NotNull
 	private Double value;
 	
-	@Column
+	@Column(length = 100)
 	private String description;
 	
 	public Transaction()

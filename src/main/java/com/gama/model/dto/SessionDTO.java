@@ -1,6 +1,6 @@
 package com.gama.model.dto;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import com.gama.model.Account;
@@ -9,10 +9,12 @@ import com.gama.model.User;
 
 
 public class SessionDTO {
+	private String login;
 	private String token;
-	private LocalDateTime tokenExpirationTime;
-	private LocalDateTime tokenExpeditionTime;
-	private User user;
+
+	private Date tokenExpirationTime;
+	private Date tokenExpeditionTime;
+
 	private List<Account> accounts;
 	private List<AccountPlan> plans;
 	
@@ -20,23 +22,16 @@ public class SessionDTO {
 		
 	}
 	
-	public SessionDTO(User user, String token, LocalDateTime tokenExpirationTime, LocalDateTime tokenExpeditionTime, List<Account> accounts, List<AccountPlan> plans ) {
+
+	public SessionDTO(String login, String token, Date tokenExpirationTime, Date tokenExpeditionTime, List<Account> accounts, List<AccountPlan> plans ) {
+
 		super();
-		this.user = user;
+		this.login = login;
 		this.token = token;
 		this.tokenExpirationTime = tokenExpirationTime;
 		this.tokenExpeditionTime = tokenExpeditionTime;
 		this.accounts = accounts;
 		this.plans = plans;
-	}
-
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public String getToken() {
@@ -47,19 +42,19 @@ public class SessionDTO {
 		this.token = token;
 	}
 
-	public LocalDateTime getTokenExpirationTime() {
+	public Date getTokenExpirationTime() {
 		return tokenExpirationTime;
 	}
 
-	public void setTokenExpirationTime(LocalDateTime tokenExpirationTime) {
+	public void setTokenExpirationTime(Date tokenExpirationTime) {
 		this.tokenExpirationTime = tokenExpirationTime;
 	}
 	
-	public LocalDateTime getTokenExpeditionTime() {
+	public Date getTokenExpeditionTime() {
 		return tokenExpeditionTime;
 	}
 
-	public void setTokenExpeditionTime(LocalDateTime tokenExpeditionTime) {
+	public void setTokenExpeditionTime(Date tokenExpeditionTime) {
 		this.tokenExpeditionTime = tokenExpeditionTime;
 	}
 
@@ -78,7 +73,14 @@ public class SessionDTO {
 	public void setPlans(List<AccountPlan> plans) {
 		this.plans = plans;
 	}
-	
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
 	
 
 }

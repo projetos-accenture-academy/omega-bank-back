@@ -25,21 +25,21 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 	@Bean
 	public Docket detalheApi() {
-		/*
+		
 		ParameterBuilder paramBuilder = new ParameterBuilder();
 		List<Parameter> params = new ArrayList<>();
 		paramBuilder.name("Authorization").modelRef(new ModelRef("string"))
 		.parameterType("header")
 		.required(false)
 		.build();
-		*/
 		
-		//params.add(paramBuilder.build());
+		
+		params.add(paramBuilder.build());
 		
 		Docket docket = new Docket(DocumentationType.SWAGGER_2);
  
 		docket
-		//.globalOperationParameters(params)
+		.globalOperationParameters(params)
 		.select()
 		.apis(RequestHandlerSelectors.basePackage("com.gama.controller"))
 		.paths(PathSelectors.any())
