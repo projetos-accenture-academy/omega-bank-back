@@ -46,7 +46,7 @@ public class ContaServiceTest {
 	@BeforeAll
 	static void init() {
 		System.out.println("Inicializando objetos de testes: ContaService");
-		usuarioTeste = new Usuario("aabc", "123456", "A", "00100200399");
+		usuarioTeste = new Usuario("aabc", "123456", "A", "00100200399", "21988829133");
 	}
 	
 	@BeforeEach

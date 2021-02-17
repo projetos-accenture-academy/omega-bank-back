@@ -19,7 +19,7 @@ public class UsuarioService {
 			throw new Exception("Usuário já cadastrado!");
 		} else if (!user.valid()) {
 			throw new Exception(
-					String.format("Falha ao inserir usuário: {0}{1}", System.lineSeparator(), user.getListError()));
+					String.format("Falha ao inserir usuário: " + user.getListError()));
 		} else {
 			return usuarioRepository.save(user);
 		}

@@ -22,7 +22,7 @@ public class Usuario {
 	@Column(unique=true,nullable = false, length = 20)
 	private String login;
 	
-	@Column(nullable = false, length = 8)
+	@Column(nullable = false, length = 255)
 	private String senha;	
 	
 	@Column(nullable = false, length = 30)
@@ -31,7 +31,7 @@ public class Usuario {
 	@Column(unique=true, nullable = false, length=11)
 	private String telefone;
 	
-	@Column(unique = true, nullable = false, length = 14)
+	@Column(unique = true, nullable = false, length = 11)
 	private String cpf;
 	
 	@Transient
@@ -110,17 +110,17 @@ public class Usuario {
 			listError.add("A senha deve conter no mínimo 6 caracteres.");
 			return false;
 		}
-		if (senha.length() > 8) {
-			listError.add("A senha deve conter no máximo 8 caracteres.");
+		if (senha.length() > 255) {
+			listError.add("A senha deve conter no máximo 255 caracteres.");
 			return false;
 		}	
 		
 		if (nome.isEmpty()) {
-			listError.add("A senha deve ser informada.");
+			listError.add("O nome deve ser informado.");
 			return false;
 		}		
 	    if (nome.length() > 30) {
-			listError.add("A senha deve conter no máximo 30 caracteres.");
+			listError.add("O nome deve conter no máximo 30 caracteres.");
 			return false;
 		}
 	    
