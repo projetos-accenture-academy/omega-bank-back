@@ -14,60 +14,52 @@ import com.sun.istack.NotNull;
 @Entity
 @Table(name = "planos_conta")
 public class AccountPlan {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
+	private int id;
+
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	@NotNull
 	private User user;
-	
+
 	@Column(nullable = false, name = "descricao")
 	private String description;
-	
-	
-	public AccountPlan()
-	{
-		
-	}	
-		
-	
+
+	public AccountPlan() {
+	}
+
 	/**
-	 * Cria um plano de conta criado por um Usuário específico, com uma descrição não-nula
+	 * Cria um plano de conta criado por um Usuário específico, com uma descrição
+	 * não-nula
+	 * 
 	 * @param user
 	 * @param description
 	 */
-	public AccountPlan(User user, String description)
-	{
-		this.user=user;
-		this.description=description;
+	public AccountPlan(User user, String description) {
+		this.user = user;
+		this.description = description;
 	}
-
 
 	public Integer getId() {
 		return id;
 	}
 
-
 	public User getuser() {
 		return user;
 	}
-
 
 	public void setuser(User user) {
 		this.user = user;
 	}
 
-
 	public String getdescription() {
 		return description;
 	}
 
-
 	public void setdescription(String description) {
 		this.description = description;
 	}
-	
+
 }

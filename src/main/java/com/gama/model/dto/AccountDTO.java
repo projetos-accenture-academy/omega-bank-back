@@ -1,8 +1,6 @@
 package com.gama.model.dto;
 
-import java.util.List;
-
-import com.gama.model.Transaction;
+import com.gama.enums.TipoConta;
 
 public class AccountDTO {
 	
@@ -31,11 +29,11 @@ public class AccountDTO {
 		return saldo;
 	}
 	
-	public double getDescricao() {
+	public String getDescricao() {
 		return descricao;
 	}
 	
-	public id getUsuarioId() {
+	public int getUsuarioId() {
 		return usuario_id;
 	}	
 	

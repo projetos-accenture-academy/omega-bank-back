@@ -14,7 +14,6 @@ import javax.persistence.Table;
  */
 
 @Entity
-@NoArgsConstructor
 @Table(name = "usuarios")
 public class User {
 
@@ -37,6 +36,8 @@ public class User {
 	@Column(length = 11)
 	private String telefone;
 
+	public User(){};
+	
 	public User(String login, String senha, String nome, String cpf, String telefone) {
 		this.login = login;
 		this.senha = senha;

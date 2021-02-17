@@ -4,21 +4,21 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class UserDTO {
 
-    @ApiModelProperty(value = "Login", example = "user01", required = true)
-	private String login;	
+	@ApiModelProperty(value = "Login", example = "user01", required = true)
+	private String login;
 
-    @ApiModelProperty(value = "Senha", required = true)
+	@ApiModelProperty(value = "Senha", required = true)
 	private String senha;
 
-    @ApiModelProperty(value = "Nome", example = "user", required = true)
+	@ApiModelProperty(value = "Nome", example = "user", required = true)
 	private String nome;
 
-    @ApiModelProperty(value = "CPF", example = "11111111111", required = true)
+	@ApiModelProperty(value = "CPF", example = "11111111111", required = true)
 	private String cpf;
+
+	@ApiModelProperty(value = "Telefone", example = "6735620000")
+	private String telefone;
 	
-    @ApiModelProperty(value = "Telefone", example = "6735620000")
-	private String telefone;	
-		
 	public String getLogin() {
 		return login;
 	}
@@ -50,12 +50,12 @@ public class UserDTO {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
+
 	public String getTelefone() {
 		return telefone;
 	}
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
-	}		
+	}
 }

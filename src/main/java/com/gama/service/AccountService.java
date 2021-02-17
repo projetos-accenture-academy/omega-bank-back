@@ -13,6 +13,7 @@ import com.gama.exceptions.BalanceNotEnoughException;
 import com.gama.model.Account;
 import com.gama.model.User;
 import com.gama.repository.AccountRepository;
+import com.gama.repository.UserRepository;
 import com.gama.utils.Validator;
 
 @Component
@@ -92,6 +93,8 @@ public class AccountService{
 	 * @param id
 	 * @return List<Conta>
 	 * @throws Exception se o usuário não existir
+	 * 
+	 * @author Alessandra Canuto
 	 */
 	public List<Account> getAccountsByUserId(int id) throws Exception {
 		Validator.isEmptyValue(userRepository.findById(id), "Não é possível obter uma lista de um usuário inexistente.");

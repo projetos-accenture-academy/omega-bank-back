@@ -1,35 +1,39 @@
 package com.gama.controller;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gama.exceptions.AccountPlanAlreadyExistsException;
 import com.gama.model.AccountPlan;
-import com.gama.model.User;
 import com.gama.model.dto.AccountPlanDTO;
 import com.gama.repository.AccountPlanRepository;
 import com.gama.service.AccountPlanService;
 
 @RestController
-@RequestMapping(path="/plan")
+@RequestMapping(path = "/plan")
 public class AccountPlanController {
-	
-	@Autowired AccountPlanRepository apRepo;
-	
+
+	@Autowired
+	AccountPlanRepository apRepo;
+
 	@Autowired
 	AccountPlanService apService;
-	
+
+	@Autowired
+	private ModelMapper modelMapper = new ModelMapper();
+
 //	/**
 //	 * Retorna todos os Planos de Conta existentes
 //	 * @param 
@@ -42,48 +46,68 @@ public class AccountPlanController {
 //		return apRepo.findAll();
 //
 //	}
-	
-	/**
-	 * Retorna uma lista com todos os planos de conta de um dado usuário
-	 * @param user Usuário dono dos Planos de Conta
-	 * @return
-	 * @throws Exception 
-	 */
-	@GetMapping("/{user}")
-	public List<AccountPlan> getUsersAccountPlans(@PathVariable User user) throws Exception
-	{
-		return apService.getAccountPlansByUser(user);
-	}
-	
-	
-	
+
+//	/**
+//	 * Retorna uma lista com todos os planos de conta de um dado usuário
+//	 * @param user Usuário dono dos Planos de Conta
+//	 * @return
+//	 * @throws Exception 
+//	 */
+//	@GetMapping("/{user}")
+//	public List<AccountPlan> getUsersAccountPlans(@PathVariable User user) throws Exception
+//	{
+//		return apService.getAccountPlansByUser(user);
+//	}
+//		
+
 	/**
 	 * Retorna um Plano de Conta a partir de seu ID (se o mesmo existir)
+	 * 
 	 * @param id
 	 * @return Um Plano de Conta com o ID dado, se este existir
-	 * @throws Exception 
+	 * @throws Exception
 	 */
+	@CrossOrigin
 	@GetMapping("/{id}")
-	public AccountPlan getAccountPlan(@PathVariable Integer id) throws Exception
-	{
+	public AccountPlan getAccountPlan(@PathVariable int id) throws Exception {
 		return apService.getAccountPlanById(id);
 	}
-	
+
+	/**
+	 * Retorna um Plano de Conta a partir de seu ID (se o mesmo existir)
+	 * 
+	 * @param id
+	 * @return Um Plano de Conta com o ID dado, se este existir
+	 * @throws Exception
+	 */
+	@CrossOrigin
+	@GetMapping(value = "/{userId}")
+	public List<AccountPlan> getAccountPlansByUserId(@RequestParam int userId) {
+		try {
+			return apService.getAccountPlansByUserId(userId);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 	/**
 	 * Adiciona um Plano de Conta de um usuário específico na base
+	 * 
 	 * @param accountPlanDTO Um DTO de entrada de Plano de Conta
-	 * @throws Exception 
-	 * @throws AccountPlanAlreadyExistsException 
-	 * @throws IllegalArgumentException 
+	 * @throws Exception
+	 * @throws AccountPlanAlreadyExistsException
+	 * @throws IllegalArgumentException
 	 */
+	@CrossOrigin
 	@PostMapping()
-	public ResponseEntity<AccountPlanDTO> addAccountPlan(@RequestBody AccountPlanDTO accountPlanDTO) throws IllegalArgumentException, AccountPlanAlreadyExistsException, Exception
-	{
-		AccountPlan ap = AccountPlanDTO.transformToObject(accountPlanDTO);
-		apService.saveAccountPlan(ap);
-		return new ResponseEntity<>(AccountPlanDTO.transformToDTO(ap), HttpStatus.CREATED);
+	public ResponseEntity<AccountPlan> addAccountPlan(@RequestBody AccountPlanDTO accountPlanDTO)
+			throws IllegalArgumentException, AccountPlanAlreadyExistsException, Exception {
+		return new ResponseEntity<>(apService.saveAccountPlan(modelMapper.map(accountPlanDTO, AccountPlan.class)),
+				HttpStatus.CREATED);
 	}
-	
 
 	// no PUT for AccountPlan (for initial version, at least)
 //	/**
@@ -101,13 +125,7 @@ public class AccountPlanController {
 //		apService.saveAccountPlan(ap);
 //		return new ResponseEntity<>(AccountPlanDTO.transformToDTO(ap), HttpStatus.CREATED);
 //	}
-	
-	
-	
-	//No DELETE for AccountPlan
-	
-	
-	
-	
+
+	// No DELETE for AccountPlan
 
 }

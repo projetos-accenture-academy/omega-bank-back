@@ -36,8 +36,8 @@ public class UserService {
 			throw new Exception("Falha ao inserir usuário: " + System.lineSeparator() +	userValidator.getListError());
 		} 
 		
-		if (usuarioRepository.findUsuarioByLogin(user.getLogin())) {
-			throw new Exception("Nome de login já existe!");
+		if (usuarioRepository.existsByLogin(user.getLogin())) {
+			throw new Exception("Nome de login já cadastrado!");
 		}
 		
 		User newUser = usuarioRepository.save(user);
