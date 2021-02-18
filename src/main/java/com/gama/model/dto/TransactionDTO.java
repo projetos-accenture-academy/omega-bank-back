@@ -70,7 +70,7 @@ public class TransactionDTO {
 
 	public static TransactionDTO transformToTransactionDTO(Transaction transaction, TransactionType transactionType)
 	{
-		return new TransactionDTO(transactionType, transaction.getAccountPlan().getdescription(),
+		return new TransactionDTO(transactionType, transaction.getAccountPlan().getDescription(),
 				transaction.getSourceAccount().getNumero(), transaction.getDestinationAccount().getNumero(), transaction.getDate(), 
 				transaction.getValue(), transaction.getDescription());
 				
