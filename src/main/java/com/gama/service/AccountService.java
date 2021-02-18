@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.gama.enums.AccountType;
+import com.gama.enums.TransactionType;
 import com.gama.exceptions.AccountAlreadyExistsException;
 import com.gama.exceptions.AccountDoesNotExistsException;
 import com.gama.exceptions.BalanceNotEnoughException;
@@ -113,15 +115,16 @@ public class AccountService{
 	}
 	
 	/**
-	 * 
-	 * @param numero Número da conta ser pesquisada
+	 * Retorna uma conta de um usuário
+	 * @param number Número da conta ser pesquisada
+	 * @param type Tipo da conta ser pesquisada
 	 * @return Conta
 	 * @throws Exception 
 	 */
-	public Account getAccountByNumber(String number) throws Exception {
+	public Account getAccountByNumberAndType(String number, AccountType type) throws Exception {
 		Validator.isEmptyValue(number, "Não é possível pesquisar uma conta através de uma parâmetro nulo.");
 
-		return accountRepository.findByNumero(number);
+		return accountRepository.findByNumeroAndTipo(number, type.toString());
 	}
 
 	/**

@@ -19,7 +19,8 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 	boolean existsByNumero(String number);
 	boolean existsByNumeroAndTipo(String number, AccountType type);
 
-	Account findByNumero(String number);
+	List<Account> findByNumero(String number);
+	Account findByNumeroAndTipo(String number, String type);
 	
 	List<AccountTypesInterface> findTypesByUsuarioAndNumero(User usuario, String numero);	
 	List<Account> findByUsuarioId(int id);
