@@ -44,7 +44,8 @@ public class TransactionService {
 			//Based on transaction type, check if the source/destination value is valid
 			switch(transactionType)
 			{
-			case T:
+			case TC:
+			case TU:
 				if(transaction.getDestinationAccount()==null || transaction.getSourceAccount()==null)
 				{
 					throw new IllegalArgumentException("O Lançamento(Tranferência) necessita de contas de origem e destino definidas");
