@@ -6,7 +6,7 @@ package com.gama.enums;
  *
  */
 public enum TransactionType {
-	R("RECEITA"), D("DESPESA"), TC("TRANSFERENCIA ENTRE CONTAS"), TU("TRANSFERENCIA ENTRE USUARIOS");
+	R("RECEITA"), D("DESPESA"), T("TRANSFERENCIA ENTRE CONTAS");//, TU("TRANSFERENCIA ENTRE USUARIOS");
 
 private String description;
 

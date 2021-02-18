@@ -65,12 +65,14 @@ public class UserService {
 		pc = new AccountPlan(newUser, TransactionType.D.getDescription(),TransactionType.D);
 		planRepository.save(pc);
 		
-		pc = new AccountPlan(newUser, TransactionType.TC.getDescription(), TransactionType.TC);
+		pc = new AccountPlan(newUser, TransactionType.T.getDescription(), TransactionType.T);
 		planRepository.save(pc);
 		
+		//Não existe outro tipo de Transação
+		/*
 		pc = new AccountPlan(newUser, TransactionType.TU.getDescription(), TransactionType.TU);
 		planRepository.save(pc);
-				
+			*/	
 		return newUser;		
 	}
 
