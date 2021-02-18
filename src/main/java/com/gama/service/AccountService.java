@@ -124,7 +124,7 @@ public class AccountService{
 	public Account getAccountByNumberAndType(String number, AccountType type) throws Exception {
 		Validator.isEmptyValue(number, "Não é possível pesquisar uma conta através de uma parâmetro nulo.");
 
-		return accountRepository.findByNumeroAndTipo(number, type.toString());
+		return accountRepository.findByNumeroAndTipo(number, type);
 	}
 
 	/**

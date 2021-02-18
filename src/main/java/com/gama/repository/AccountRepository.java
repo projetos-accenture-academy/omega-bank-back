@@ -20,7 +20,7 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 	boolean existsByNumeroAndTipo(String number, AccountType type);
 
 	List<Account> findByNumero(String number);
-	Account findByNumeroAndTipo(String number, String type);
+	Account findByNumeroAndTipo(String number, AccountType type);
 	
 	List<AccountTypesInterface> findTypesByUsuarioAndNumero(User usuario, String numero);	
 	List<Account> findByUsuarioId(int id);

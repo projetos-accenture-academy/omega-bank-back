@@ -33,4 +33,14 @@ public enum AccountType {
 		else
 			throw new IllegalArgumentException();
 	}
+	
+	public static AccountType getAccountType(String s)
+	{
+		if(s.equals("CC"))
+			return AccountType.CC;
+		else if(s.equals("CB"))
+			return AccountType.CB;
+		else
+			throw new IllegalArgumentException("AccountType: Valor inválido de string" + s);
+	}
 }
