@@ -10,6 +10,7 @@ import com.gama.exceptions.AccountPlanAlreadyExistsException;
 import com.gama.model.AccountPlan;
 import com.gama.model.User;
 import com.gama.repository.AccountPlanRepository;
+import com.gama.repository.UserRepository;
 import com.gama.utils.Validator;
 
 @Component
@@ -17,6 +18,9 @@ public class AccountPlanService {
 
 	@Autowired
 	private AccountPlanRepository accPlanRepo;
+	
+	@Autowired
+	private UserRepository userRepository;	
 
 	/**
 	 * Insere um novo Plano de Conta na base de dados, validando se já existe um com
@@ -32,9 +36,9 @@ public class AccountPlanService {
 	public AccountPlan saveAccountPlan(AccountPlan accountPlan)
 			throws IllegalArgumentException, AccountPlanAlreadyExistsException, Exception {
 		if (accountPlan != null) {
-			// Validates passed description
+			// Validates passed description			
 			Validator.isEmptyValue(accountPlan.getdescription(), "O Plano de conta necessita de uma descrição");
-			//Validator.isEmptyValue(accountPlan.getuser(), "O Plano de conta deve estar associado a um usuário");
+			Validator.isEmptyValue(accountPlan.getuser(), "O Plano de conta deve estar associado a um usuário");
 
 			boolean accountPlanExists = accPlanRepo.existsByUserAndDescription(accountPlan.getuser(),
 					accountPlan.getdescription());
@@ -65,7 +69,7 @@ public class AccountPlanService {
 		if (!accPlanRepo.existsById(userId)) {
 			new Exception("Não é possível listar as contas para um usuário não cadastrado.");
 		}
-		return accPlanRepo.findAll().stream().filter(c -> c.getuser().getId() == userId).collect(Collectors.toList());
+		return accPlanRepo.findAllByUserId(userId); //accPlanRepo.findAll().stream().filter(c -> c.getuser().getId() == userId).collect(Collectors.toList());
 	}
 
 	/**

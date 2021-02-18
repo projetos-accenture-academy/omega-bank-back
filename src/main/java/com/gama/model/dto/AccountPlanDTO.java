@@ -2,15 +2,15 @@ package com.gama.model.dto;
 
 public class AccountPlanDTO {
 
-	private int userId;
+	private int usuario_id;
 	private String description;
 	
 	public int getUserId() {
-		return userId;
+		return usuario_id;
 	}
 
 	public void setUserId(int userId) {
-		this.userId = userId;
+		this.usuario_id = userId;
 	}
 
 	public String getDescription() {

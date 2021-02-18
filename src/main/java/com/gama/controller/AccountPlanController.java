@@ -60,18 +60,18 @@ public class AccountPlanController {
 //	}
 //		
 
-	/**
-	 * Retorna um Plano de Conta a partir de seu ID (se o mesmo existir)
-	 * 
-	 * @param id
-	 * @return Um Plano de Conta com o ID dado, se este existir
-	 * @throws Exception
-	 */
-	@CrossOrigin
-	@GetMapping("/{id}")
-	public AccountPlan getAccountPlan(@PathVariable int id) throws Exception {
-		return apService.getAccountPlanById(id);
-	}
+//	/**
+//	 * Retorna um Plano de Conta a partir de seu ID (se o mesmo existir)
+//	 * 
+//	 * @param id
+//	 * @return Um Plano de Conta com o ID dado, se este existir
+//	 * @throws Exception
+//	 */
+//	@CrossOrigin
+//	@GetMapping("/{id}")
+//	public AccountPlan getAccountPlan(@PathVariable int id) throws Exception {
+//		return apService.getAccountPlanById(id);
+//	}
 
 	/**
 	 * Retorna um Plano de Conta a partir de seu ID (se o mesmo existir)

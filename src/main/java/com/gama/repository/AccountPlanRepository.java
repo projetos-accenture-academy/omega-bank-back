@@ -24,8 +24,7 @@ public interface AccountPlanRepository extends JpaRepository<AccountPlan, Intege
 	AccountPlan findByUserAndDescription(User user, String description);
 	List<AccountPlan> findByUser(User user);
 	
-	/* NÃO FUNCIONOU */
-//	@Query(nativeQuery = true, value = "SELECT * FROM planos_conta WHERE usuario_id = :user_id;")
-//	List<AccountPlan> findAllByUserId(@Param("user_id") int userId);
+	@Query(nativeQuery = true, value = "SELECT * FROM planos_conta WHERE usuario_id = :id")
+	List<AccountPlan> findAllByUserId(@Param("id") int id);
 	
 }
