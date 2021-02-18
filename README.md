@@ -21,6 +21,7 @@ Bem vindo ao repositório do grupo Ômega, abaixo estão descritos os meios de a
 
 ### Fluxo de uso da API REST
 
+A API tem como endpoint inicial, o login no qual o usuário fornece suas credenciais (usuário e senha) e como retorno recebe um token de segurança que possibilita o acesso a outros endpoints da API. 
 
 
 
