@@ -2,8 +2,9 @@ package com.gama.utils;
 
 import javax.persistence.Entity;
 
-//Used by TransactionRepo and Service classes to get the sum of values from an account, categorized by account plan
+import org.hibernate.annotations.Immutable;
 
+//Used by TransactionRepo and Service classes to get the sum of values from an account, categorized by account plan
 
 public class CategorizedTransactionAuxiliary {
 

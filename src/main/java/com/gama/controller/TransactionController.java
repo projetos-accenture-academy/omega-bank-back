@@ -188,7 +188,7 @@ public class TransactionController {
 	 */
 	@PostMapping(path = "/ingoingCategorizedTransactions", consumes="application/json", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan
+	public Iterable<Transaction> getIngoingTransactionsCategorizedByAccountPlan
 	(@RequestBody AccountCategoriesSum accountDateInfo)//Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
 	{
 		
@@ -203,7 +203,7 @@ public class TransactionController {
 	 */
 	@PostMapping(path = "/outgoingCategorizedTransactions", consumes = "application/json", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan
+	public Iterable<Transaction> getOutgoingTransactionsCategorizedByAccountPlan
 	(@RequestBody AccountCategoriesSum accountDateInfo)//Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
 	{
 		return transactionService.getOutgoingTransactionsCategorizedByAccountPlan(accountDateInfo.accountId, 
