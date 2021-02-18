@@ -96,11 +96,15 @@ public class TransactionDTO {
 			AccountPlanRepository apr)
 	{
 		
-		Account sourceAccount = acRepo.findByNumeroAndTipo(transactionDTO.getSourceAccountName(), AccountType.getAccountType(transactionDTO.getSourceAccountType()));
-		Account destinationAccount = acRepo.findByNumeroAndTipo(transactionDTO.getDestinationAccountName(), AccountType.getAccountType(transactionDTO.getDestinationAccountType()));
+		Account sourceAccount = transactionDTO.getSourceAccountType() == null ? 
+				null : 
+				acRepo.findByNumeroAndTipo(transactionDTO.getSourceAccountName(), AccountType.getAccountType(transactionDTO.getSourceAccountType()));
+		Account destinationAccount = transactionDTO.getDestinationAccountType() == null ? 
+				null : 
+				acRepo.findByNumeroAndTipo(transactionDTO.getDestinationAccountName(), AccountType.getAccountType(transactionDTO.getDestinationAccountType()));
 
 		AccountPlan acp = null;
-		if(sourceAccount==null || sourceAccount.getUsuario()==null)
+		if(sourceAccount==null)
 		{
 			//Money deposit, no source, so AccountPlan has a default value from the DESTINATION account
 			acp = apr.findByUserAndDescription(destinationAccount.getUsuario(), transactionDTO.getAccountPlanDescription());

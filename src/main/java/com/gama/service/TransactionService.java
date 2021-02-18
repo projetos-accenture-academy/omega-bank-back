@@ -86,6 +86,10 @@ public class TransactionService {
 			switch(transaction.getTransactionType())
 			{
 			case "T":
+
+				//If money is coming into user account, AccountPlan is a default one
+				transaction.setAccountPlanDescription("RECEITA");
+				
 				if(transaction.getDestinationAccountName()==null || transaction.getSourceAccountName()==null)
 				{
 					throw new IllegalArgumentException("O Lançamento(Tranferência) necessita de contas de origem e destino definidas");
@@ -108,14 +112,13 @@ public class TransactionService {
 				
 			}
 			
-			//If money is coming into user account, AccountPlan is a default one
-			transaction.setAccountPlanDescription("DEFAULT_RECEITA");
 			
 			//TODO: check if this may cause an error
 			boolean lancamentoExistente = transactionRepository.existsById(transaction.getId());
 			
 			if(!lancamentoExistente) //There cannot be an update, only an insertion
 			{
+				
 				transactionRepository.save(TransactionDTO.transformToTransaction(transaction, accountRepository, accountPlanRepository));
 			}
 			else
