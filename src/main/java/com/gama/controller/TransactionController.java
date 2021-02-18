@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +37,23 @@ public class TransactionController {
 	@Autowired
 	private ModelMapper modelMapper = new ModelMapper();
 	
+	//Wrapper class for request body
+	public class AccountInfo
+	{
+		public String accountName;
+		public String accountType;
+	}
 	
+	
+	//Wrapper class for request body
+	public class AccountInfoDateRange
+	{
+		public String accountName;
+		public String accountType;
+		public LocalDate startDate;
+		public LocalDate endDate;
+		
+	}
 	
 	//--------------------------------------------------------GET---------------------------------------------------------------
 	
@@ -50,7 +67,7 @@ public class TransactionController {
 	 */
 	@GetMapping(path = "/{id}", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public TransactionDTO getTransaction(Long id) throws IllegalArgumentException, Exception	{
+	public TransactionDTO getTransaction(@PathVariable(name = "id") Long id) throws IllegalArgumentException, Exception	{
 		return transactionService.getTransaction(id);
 		
 	}
@@ -71,32 +88,34 @@ public class TransactionController {
 
 	/**
 	 * Retorna todas as Transações que tenham como ContaOrigem com nome/número equivalente ao passado para a função
-	 * @param sourceAccountName Nome da Conta de Origem
+	 * @param sourceAccount Classe com nome e tipo da Conta de Origem
 	 * @return Uma lista com TODAS as Transações da conta Origem especificada
 	 * @throws IllegalArgumentException
 	 * @throws Exception
 	 */
-	@GetMapping(path = "/sourceAccount/{sourceAccountName}", produces="application/json")
+	@GetMapping(path = "/sourceAccount", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<TransactionDTO> getTransactionsBySourceAccount(String sourceAccountName) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsBySourceAccount(@RequestBody AccountInfo sourceAccount) 
+			throws IllegalArgumentException, Exception
 	{
-		return transactionService.getTransactionsBySourceAccount(sourceAccountName);
+		return transactionService.getTransactionsBySourceAccount(sourceAccount.accountName, sourceAccount.accountType);
 	}
 	
 	
 	
 	/**
 	 * Retorna todas as Transações que tenham como Conta de Destino com nome/número equivalente ao passado para a função
-	 * @param destinationAccount Nome da Conta de Destino
+	 * @param destinationAccount Classe com nome e tipo da Conta de Destino
 	 * @return Uma lista com TODAS as Transações da conta Destino especificada
 	 * @throws Exception 
 	 * @throws IllegalArgumentException 
 	 */
-	@GetMapping(path = "/destinationAccount/{destinationAccount}", produces="application/json")
+	@GetMapping(path = "/destinationAccount", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<TransactionDTO> getTransactionsByDestinationAccount(String destinationAccountName) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsByDestinationAccount(@RequestBody AccountInfo destinationAccount) 
+			throws IllegalArgumentException, Exception
 	{
-		return transactionService.getTransactionsByDestinationAccount(destinationAccountName);
+		return transactionService.getTransactionsByDestinationAccount(destinationAccount.accountName, destinationAccount.accountType);
 	}
 	
 	
@@ -137,7 +156,7 @@ public class TransactionController {
 	
 	/**
 	 * Retorna todas as Transações que tenham uma específica Conta Origem e estejam entre a data de inicio e de fim da busca
-	 * @param sourceAccountName Nome da conta de origem
+	 * @param sourceAccount Classe que contém o nome e tipo da conta de origem, junto com as datas de início e fim da busca 
 	 * @param startDate
 	 * @param endDate
 	 * @return
@@ -146,16 +165,17 @@ public class TransactionController {
 	 */
 	@GetMapping(path = "/sourceAccount/dateRange", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<TransactionDTO> getTransactionsBySourceAccountAndDateBetween(@RequestBody String sourceAccountName, 
-			@RequestBody LocalDate startDate, @RequestBody LocalDate endDate) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsBySourceAccountAndDateBetween(@RequestBody AccountInfoDateRange sourceAccount) 
+			throws IllegalArgumentException, Exception
 	{
-		return transactionService.getTransactionsBySourceAccountAndDateBetween(sourceAccountName, startDate, endDate);
+		return transactionService.getTransactionsBySourceAccountAndDateBetween(sourceAccount.accountName, 
+				sourceAccount.accountType, sourceAccount.startDate, sourceAccount.endDate);
 	}
 	
 	
 	/**
 	 * Retorna todas as Transações que tenham uma específica Conta Destino e estejam entre a data de inicio e de fim da busca
-	 * @param sourceAccountName Nome da conta de origem
+	 * @param destinationAccount Classe que contém o nome e tipo da conta de destino, junto com as datas de início e fim da busca
 	 * @param startDate
 	 * @param endDate
 	 * @return Uma lista com todas as transações que estejam dentro das condições delimitadas
@@ -164,10 +184,11 @@ public class TransactionController {
 	 */	
 	@GetMapping(path = "/destinationAccount/dateRange", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<TransactionDTO> getTransactionsByDestinationAccountAndDateBetween(@RequestBody String destinationAccountName, 
-			 @RequestBody LocalDate startDate, @RequestBody LocalDate endDate) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsByDestinationAccountAndDateBetween(@RequestBody AccountInfoDateRange destinationAccount) 
+			throws IllegalArgumentException, Exception
 	{
-		return transactionService.getTransactionsByDestinationAccountAndDateBetween(destinationAccountName, startDate, endDate);
+		return transactionService.getTransactionsByDestinationAccountAndDateBetween(destinationAccount.accountName, 
+				destinationAccount.accountType, destinationAccount.startDate, destinationAccount.endDate);
 	}
 	
 	
@@ -219,7 +240,6 @@ public class TransactionController {
 	public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionDTO transactionDTO) throws IllegalArgumentException, TransactionAlreadyExistsException, Exception {
 		
 		
-		TransactionType tt = TransactionType.R;;
 		
 		/*
 		switch(type)
@@ -238,7 +258,7 @@ public class TransactionController {
 			throw new IllegalArgumentException();
 		}*/
 		
-		transactionService.addTransaction(transactionDTO, tt);
+		transactionService.addTransaction(transactionDTO);
 		return new ResponseEntity<>(transactionDTO, HttpStatus.CREATED);
 		
 	}

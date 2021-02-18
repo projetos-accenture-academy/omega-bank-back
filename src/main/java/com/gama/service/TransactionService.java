@@ -66,7 +66,7 @@ public class TransactionService {
 	 * @param transactionType Tipo de lançamento a ser inserido
 	 * @throws LançamentoExistenteException
 	 */
-	public void addTransaction(TransactionDTO transaction, TransactionType transactionType) throws IllegalArgumentException, TransactionAlreadyExistsException, Exception
+	public void addTransaction(TransactionDTO transaction) throws IllegalArgumentException, TransactionAlreadyExistsException, Exception
 	{
 		if(transaction !=null)
 		{
@@ -82,28 +82,28 @@ public class TransactionService {
 		
 			
 			//Based on transaction type, check if the source/destination value is valid
-			switch(transactionType)
+			switch(transaction.getTransactionType())
 			{
-			case T:
+			case "T":
 				if(transaction.getDestinationAccountName()==null || transaction.getSourceAccountName()==null)
 				{
 					throw new IllegalArgumentException("O Lançamento(Tranferência) necessita de contas de origem e destino definidas");
 				}
 				break;
-			case D:
+			case "D":
 				if(transaction.getDestinationAccountName()!=null || transaction.getSourceAccountName()==null)
 				{
 					throw new IllegalArgumentException("O Lançamento(Despesa) necessita de conta de origem definida e destino nula");
 				}
 				break;
-			case R:
+			case "R":
 				if(transaction.getDestinationAccountName()==null || transaction.getSourceAccountName()!=null)
 				{
 					throw new IllegalArgumentException("O Lançamento(Receita) necessita de conta de origem nula e destino definida");
 				}
 				break;
 			default:
-				throw new IllegalArgumentException("Tipo de Transação (" + transactionType.toString() + ") inválido");
+				throw new IllegalArgumentException("Tipo de Transação (" + transaction.getTransactionType() + ") inválido");
 				
 			}
 			
@@ -161,14 +161,15 @@ public class TransactionService {
 
 	/**
 	 * Obtém todos os lançamentos de uma conta origem específica 
-	 * @param sourceAccountName: nome único da conta que enviou os lançamentos buscados
+	 * @param sourceAccountName: nome da conta que enviou os lançamentos buscados
+	 * @param sourceAccountType: tipo da conta que enviou os lançamentos buscados
 	 * @return Uma lista com todos os lançamentos que possuem uma conta de origem especificada
 	 * @throws Exception 
 	 * @throws IllegalArgumentException 
 	 */
-	public Iterable<TransactionDTO> getTransactionsBySourceAccount(String sourceAccountName) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsBySourceAccount(String sourceAccountName, String sourceAccountType) throws IllegalArgumentException, Exception
 	{
-		Account sourceAccount = accountRepository.findByNumero(sourceAccountName);
+		Account sourceAccount = accountRepository.findByNumeroAndTipo(sourceAccountName, sourceAccountType);
 		
 		Iterable<Transaction> transactions = transactionRepository.findBySourceAccount(sourceAccount);
 		
@@ -186,14 +187,16 @@ public class TransactionService {
 	
 	/**
 	 * Obtém todos os lançamentos de uma conta destino específica
-	 * @param contaOrigem: Conta que recebeu os lançamentos buscados
+	 * @param destinationAccountName: nome da conta que recebeu os lançamentos buscados
+	 * @param destinationAccountType: tipo da conta que enviou os lançamentos buscados
 	 * @return Uma lista com todos os lançamentos que possuem uma conta de destino especificada
 	 * @throws Exception 
 	 * @throws IllegalArgumentException 
 	 */
-	public Iterable<TransactionDTO> getTransactionsByDestinationAccount(String destinationAccountName) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsByDestinationAccount(String destinationAccountName, 
+			String destinationAccountType) throws IllegalArgumentException, Exception
 	{
-		Account destinationAccount = accountRepository.findByNumero(destinationAccountName);
+		Account destinationAccount = accountRepository.findByNumeroAndTipo(destinationAccountName, destinationAccountType);
 		
 		Iterable<Transaction> transactions = transactionRepository.findByDestinationAccount(destinationAccount);
 		
@@ -261,16 +264,18 @@ public class TransactionService {
 	
 	/**
 	 * Obtém todos os lançamentos de uma conta origem específica dentro de um intervalo de datas
-	 * @param sourceAccount ID da conta origem dos Lançamentos
+	 * @param sourceAccountName nome da conta origem dos Lançamentos
+	 * @param sourceAccountType tipo da conta origem dos Lançamentos
 	 * @param startDate Data de início da busca
 	 * @param endDate Data de fim da busca
 	 * @return Lista com todos os lançamentos entre as datas de busca com a conta de origem requisitada
 	 * @throws Exception 
 	 * @throws IllegalArgumentException 
 	 */
-	public Iterable<TransactionDTO> getTransactionsBySourceAccountAndDateBetween(String sourceAccountName, LocalDate startDate, LocalDate endDate) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsBySourceAccountAndDateBetween(String sourceAccountName, String sourceAccountType, 
+			LocalDate startDate, LocalDate endDate) throws IllegalArgumentException, Exception
 	{
-		Account sourceAccount = accountRepository.findByNumero(sourceAccountName);
+		Account sourceAccount = accountRepository.findByNumeroAndTipo(sourceAccountName, sourceAccountType);
 
 		
 		Iterable<Transaction> transactions = transactionRepository.findBySourceAccountAndDateBetween(sourceAccount, startDate, endDate);
@@ -290,17 +295,19 @@ public class TransactionService {
 	
 	/**
 	 * Obtém todos os lançamentos de uma conta destino específica dentro de um intervalo de datas
-	 * @param sourceAccount Conta destino dos Lançamentos
+	 * @param sourceAccountName nome da conta destino dos Lançamentos
+	 * @param sourceAccountType tipo da conta destino dos Lançamentos
 	 * @param startDate Data de início da busca
 	 * @param endDate Data de fim da busca
 	 * @return Lista com todos os lançamentos entre as datas de busca com a conta de destino requisitada
 	 * @throws Exception 
 	 * @throws IllegalArgumentException 
 	 */
-	public Iterable<TransactionDTO> getTransactionsByDestinationAccountAndDateBetween(String destinationAccountName, LocalDate startDate, LocalDate endDate) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsByDestinationAccountAndDateBetween(String destinationAccountName, String destinationAccountType, 
+			LocalDate startDate, LocalDate endDate) throws IllegalArgumentException, Exception
 	{
 
-		Account destinationAccount = accountRepository.findByNumero(destinationAccountName);
+		Account destinationAccount = accountRepository.findByNumeroAndTipo(destinationAccountName, destinationAccountType);
 
 		
 		Iterable<Transaction> transactions = transactionRepository.findByDestinationAccountAndDateBetween(destinationAccount, startDate, endDate);
