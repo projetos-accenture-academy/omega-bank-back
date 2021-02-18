@@ -17,5 +17,20 @@ private TransactionType(String description) {
 	public String getDescription() {
 		return description;
 	}
+	
+	public static String typeToString(TransactionType t)
+	{
+		switch(t)
+		{
+		case R:
+			return "R";
+		case T:
+			return "T";
+		case D:
+			return "D";
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
 
 }

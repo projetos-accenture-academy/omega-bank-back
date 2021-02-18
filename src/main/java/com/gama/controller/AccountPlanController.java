@@ -110,7 +110,7 @@ public class AccountPlanController {
 		//AccountPlan ap = AccountPlanDTO.transformToObject(accountPlanDTO, userRepo);		
 		
 		User user = userRepo.findByLogin(accountPlanDTO.getLogin());
-		AccountPlan ap = new AccountPlan(user, accountPlanDTO.getDescription(), accountPlanDTO.getType());
+		AccountPlan ap = new AccountPlan(user, accountPlanDTO.getDescription());
 		
 		return new ResponseEntity<>(apService.saveAccountPlan(ap), HttpStatus.CREATED);		
 	}
