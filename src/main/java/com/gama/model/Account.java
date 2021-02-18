@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.gama.enums.TipoConta;
+import com.gama.enums.AccountType;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -20,6 +20,7 @@ import com.sun.istack.NotNull;
 	    @UniqueConstraint(columnNames = {"numero", "tipo"})
 })
 public class Account {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -32,7 +33,7 @@ public class Account {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private TipoConta tipo;
+	private AccountType tipo;
 	
 	@Column(nullable = false, scale = 2 ) 
 	private Double saldo;
@@ -50,9 +51,9 @@ public class Account {
 	 * @param usuario
 	 * @throws UsuarioNuloException 
 	 */
-	public Account(User usuario, TipoConta tipo) {
+	public Account(User usuario, AccountType tipo) {
 		this.saldo = 0.0;
-		this.descricao = tipo == TipoConta.CC ? "Conta Corrente" : "Conta Banco";
+		this.descricao = tipo.getDescription();
 		this.tipo = tipo;
 		this.usuario = usuario;
 		this.numero = usuario.getLogin();
@@ -90,11 +91,11 @@ public class Account {
 		this.descricao = descricao;
 	}
 
-	public TipoConta getTipo() {
+	public AccountType getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(TipoConta tipo) {
+	public void setTipo(AccountType tipo) {
 		this.tipo = tipo;
 	}
 	
@@ -102,7 +103,6 @@ public class Account {
 	public String toString() {
 		return "Conta [id=" + id + ", numero=" + numero + ", descricao=" + descricao + ", tipo=" + tipo + ", saldo="
 				+ saldo + ", usuario=" + usuario + "]";
-	}
-	
+	}	
 	
 }

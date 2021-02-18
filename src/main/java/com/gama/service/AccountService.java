@@ -13,12 +13,17 @@ import com.gama.exceptions.BalanceNotEnoughException;
 import com.gama.model.Account;
 import com.gama.model.User;
 import com.gama.repository.AccountRepository;
+import com.gama.repository.UserRepository;
 import com.gama.utils.Validator;
 
 @Component
 public class AccountService{
+	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	/**
 	 * 
@@ -30,7 +35,7 @@ public class AccountService{
 	 * @return
 	 * @throws Exception 
 	 */
-	public Account saveAccount(Account account) throws IllegalArgumentException, AccountAlreadyExistsException, Exception{
+	public Account saveAccount(Account account) throws IllegalArgumentException, Exception{
 		if(account != null) {
 			/*
 			 * Realiza validações quanto ao valor do atributo usuario da conta
@@ -42,7 +47,7 @@ public class AccountService{
 			boolean contaExistente = accountRepository.existsByNumeroAndTipo(account.getNumero(), account.getTipo());
 	
 			if (contaExistente && account.getId() == null)
-				throw new AccountAlreadyExistsException("Não é possível adicionar a conta Nº " + 
+				throw new Exception("Não é possível adicionar a conta Nº " + 
 						account.getNumero() + 
 						" pois já existe um registro com esse número.");
 			else
@@ -80,9 +85,20 @@ public class AccountService{
 				account.get().setSaldo(newBalance);
 				saveAccount(account.get());
 			}
-				
-			
 		}
+	}
+	
+	/**
+	 * Busca as contas pertecentes à um usuário específico
+	 * @param id
+	 * @return List<Conta>
+	 * @throws Exception se o usuário não existir
+	 * 
+	 * @author Alessandra Canuto
+	 */
+	public List<Account> getAccountsByUserId(int id) throws Exception {
+		Validator.isEmptyValue(userRepository.findById(id), "Não é possível obter uma lista de um usuário inexistente.");
+		return accountRepository.findByUsuarioId(id);
 	}
 
 	/**
@@ -92,7 +108,7 @@ public class AccountService{
 	 * @throws Exception  Se o parâmetro de busca "usuario" for null
 	 */
 	public List<Account> getAccountsByUser(User usuario) throws Exception {
-		Validator.isEmptyValue(usuario, "Não é possível obter uma lista de contas através de uma referência nula de usuário");
+		Validator.isEmptyValue(usuario, "Não é possível obter uma lista de contas através de uma referência nula de usuário.");
 		return accountRepository.findByUsuario(usuario);
 	}
 	
@@ -103,7 +119,7 @@ public class AccountService{
 	 * @throws Exception 
 	 */
 	public Account getAccountByNumber(String number) throws Exception {
-		Validator.isEmptyValue(number, "Não é possível pesquisar uma conta através de uma parâmetro nulo");
+		Validator.isEmptyValue(number, "Não é possível pesquisar uma conta através de uma parâmetro nulo.");
 
 		return accountRepository.findByNumero(number);
 	}
@@ -114,7 +130,7 @@ public class AccountService{
 	 * @throws Exception Se o parâmetro de conta para remoção for null
 	 */
 	public void removeAccount(Account account) throws Exception {	
-		Validator.isEmptyValue(account, "Não é possível remover uma conta através de uma referência nula");
+		Validator.isEmptyValue(account, "Não é possível remover uma conta através de uma referência nula.");
 
 		accountRepository.delete(account);
 	}
