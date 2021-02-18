@@ -1,6 +1,6 @@
 package com.gama.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,7 +44,7 @@ public class Transaction {
 	
 	@Column
 	@NotNull
-	private LocalDate date;
+	private Date date;
 
 	@Column
 	@NotNull
@@ -56,7 +56,7 @@ public class Transaction {
 	public Transaction()
 	{ }	
 	
-	public Transaction(AccountPlan accountPlan, Account sourceAccount, Account destinationAccount, LocalDate date,
+	public Transaction(AccountPlan accountPlan, Account sourceAccount, Account destinationAccount, Date date,
 			Double value, String description) {
 		
 		this.accountPlan = accountPlan;
@@ -87,11 +87,11 @@ public class Transaction {
 		this.destinationAccount = destinationAccount;
 	}
 
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
