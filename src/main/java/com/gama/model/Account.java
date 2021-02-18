@@ -20,6 +20,7 @@ import com.sun.istack.NotNull;
 	    @UniqueConstraint(columnNames = {"numero", "tipo"})
 })
 public class Account {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -102,7 +103,6 @@ public class Account {
 	public String toString() {
 		return "Conta [id=" + id + ", numero=" + numero + ", descricao=" + descricao + ", tipo=" + tipo + ", saldo="
 				+ saldo + ", usuario=" + usuario + "]";
-	}
-	
+	}	
 	
 }

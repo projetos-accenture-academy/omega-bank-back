@@ -47,9 +47,7 @@ public class LoginController {
 			throw new RuntimeException("Login e senha são requeridos");
 		}
 
-		Optional<User> optuser = userRepository.findByLogin(login.getLogin());
-
-		User usuario = optuser.get();
+		User usuario = userRepository.findByLogin(login.getLogin());
 
 		boolean senhaOk = encoder.matches(login.getSenha(),usuario.getSenha());
 

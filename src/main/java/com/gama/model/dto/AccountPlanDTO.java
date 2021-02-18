@@ -2,47 +2,19 @@ package com.gama.model.dto;
 
 import com.gama.model.AccountPlan;
 import com.gama.model.User;
+import com.gama.repository.UserRepository;
 
 public class AccountPlanDTO {
 
-	private Integer id;
-	private User user;
+	private String login;
 	private String description;
 	
-	
-	public AccountPlanDTO()
-	{
-		
-	}
-	
-	public AccountPlanDTO(Integer id, User user, String description)
-	{
-		this.id=id;
-		this.user=user;
-		this.description=description;
-	}
-	
-	public static AccountPlanDTO transformToDTO(AccountPlan ap)
-	{
-		return new AccountPlanDTO(ap.getId(), ap.getuser(), ap.getdescription());
-		
+	public String getLogin() {
+		return login;
 	}
 
-	public static AccountPlan transformToObject(AccountPlanDTO apd)
-	{
-		return new AccountPlan(apd.getUser(), apd.getDescription());
-
-	}
-	public Integer getId() {
-		return id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getDescription() {
@@ -52,6 +24,12 @@ public class AccountPlanDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+		
+	public static AccountPlan transformToObject(AccountPlanDTO apd, UserRepository userRepo)
+	{
+		User user = userRepo.findByLogin(apd.getLogin());
+		return new AccountPlan(user, apd.getDescription());
+		
+	}
+
 }

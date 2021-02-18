@@ -154,8 +154,8 @@ public class ContaServiceTest {
     	
     	// Procura pelo usuário cadastrado no teste anterior para tentar adicionar uma nova conta
     	// com o mesmo número para este usuário
-    	Optional<User> usuarioCriado = usuarioRepository.findByLogin(usuarioTeste.getLogin());
-    	Account conta = new Account(usuarioCriado.get(), TipoConta.CC);
+    	User usuarioCriado = usuarioRepository.findByLogin(usuarioTeste.getLogin());
+    	Account conta = new Account(usuarioCriado, TipoConta.CC);
 
     	assertNotNull(usuarioCriado);
     	

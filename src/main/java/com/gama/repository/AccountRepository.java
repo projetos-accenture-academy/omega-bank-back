@@ -22,6 +22,7 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 	Account findByNumero(String number);
 	
 	List<AccountTypesInterface> findTypesByUsuarioAndNumero(User usuario, String numero);	
+	List<Account> findByUsuarioId(int id);
 	List<Account> findByUsuarioCpf(String cpf);
 	List<Account> findByUsuario(User user);
 }

@@ -25,22 +25,29 @@ public class UserService {
 	private UserValidator userValidator;
 
 	public User salvarUsuario(User user) throws Exception {
+		
 		userValidator = new UserValidator(user);
+		
 		if (usuarioRepository.existsById(user.getId() | 0)) {
 			throw new Exception("Usuário já cadastrado!");
-		} else if (!userValidator.valid()) {
+		} 
+		
+		if (!userValidator.valid()) {
 			throw new Exception("Falha ao inserir usuário: " + System.lineSeparator() +	userValidator.getListError());
-		} else {
-			User newUser = usuarioRepository.save(user);
-			
-			Account accountCC = new Account(newUser, TipoConta.CC);
-			accountService.saveAccount(accountCC);
-			
-			Account accountCB = new Account(newUser, TipoConta.CB);
-			accountService.saveAccount(accountCB);
-			
-			return newUser;
+		} 
+		
+		if (usuarioRepository.existsByLogin(user.getLogin())) {
+			throw new Exception("Nome de login já cadastrado!");
 		}
+		
+		User newUser = usuarioRepository.save(user);
+		
+		Account accountCC = new Account(newUser, TipoConta.CC);
+		accountService.saveAccount(accountCC);
+		Account accountCB = new Account(newUser, TipoConta.CB);
+		accountService.saveAccount(accountCB);	
+				
+		return newUser;		
 	}
 
 	public User alterarUsuario(User user) throws Exception {
@@ -66,7 +73,7 @@ public class UserService {
 		return usuarioRepository.findById(id);
 	}
 
-	public Optional<User> findUsuarioByLogin(String login) {
+	public User findUsuarioByLogin(String login) {
 		return usuarioRepository.findByLogin(login);
 	}
 
