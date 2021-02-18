@@ -109,7 +109,7 @@ public class ContaServiceTest {
     public void obterContaComParamNull() throws Exception {
 
     	Exception exception = assertThrows(Exception.class, () ->{
-    		accountService.getAccountByNumber(null);
+    		accountService.getAccountByNumberAndType(null, null);
     	});
     	
     	assertEquals("Não é possível pesquisar uma conta através de uma parâmetro nulo", exception.getMessage());
@@ -130,7 +130,7 @@ public class ContaServiceTest {
     @Test
     @DisplayName("Obter uma conta sem um número válido")
     public void obterContaSemNumero() throws Exception {    	
-    	assertNull(accountService.getAccountByNumber("vazio"));
+    	assertNull(accountService.getAccountByNumberAndType("vazio", AccountType.CC)) ;
     }
     
     
@@ -175,7 +175,7 @@ public class ContaServiceTest {
     @Order(3)
     @DisplayName("Obter uma conta através do seu número")
     public void obterConta() throws Exception {
-    	assertNotNull(accountService.getAccountByNumber(usuarioTeste.getLogin()));
+    	assertNotNull(accountService.getAccountByNumberAndType(usuarioTeste.getLogin(), AccountType.CC));
     }
     
     @Test
@@ -194,12 +194,12 @@ public class ContaServiceTest {
     @DisplayName("Deletar uma conta de um usuário")
     public void deletarConta() throws Exception {
     	
-    	Account conta = accountService.getAccountByNumber(usuarioTeste.getLogin());
+    	Account conta = accountService.getAccountByNumberAndType(usuarioTeste.getLogin(), AccountType.CC);
     	assertNotNull(conta);
 
     	accountService.removeAccount(conta);
     	
-    	assertNull(accountService.getAccountByNumber(conta.getNumero()));
+    	assertNull(accountService.getAccountByNumberAndType(conta.getNumero(), AccountType.CC));
     	
     }
 }
