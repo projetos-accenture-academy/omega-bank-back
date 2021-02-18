@@ -29,20 +29,24 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	List<Transaction> findByDestinationAccountAndDateBetween(Account destinationAccount, LocalDate startDate, LocalDate endDate);
 	
 	//Custom query to sum incoming values divided by category
-	@Query(nativeQuery = true, value = "SELECT y.somaValor as valueSum, y.descricao as transactionTypeDescription from "
-									+ "( SELECT * FROM ( SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta "
-									+ "from lancamentos l where l.id_conta_destino= :id_conta and data between :start_date and :end_date "
-									+ "GROUP BY id_plano_conta, l.descricao) as x LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y;")
+	@Query(nativeQuery = true, value = "SELECT y.somaValor as value, y.descricao as description from (" 
+		  	+" SELECT * FROM ( SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta" 
+	      	+" from lancamentos l where l.id_conta_destino= :id_conta" 
+	      	+" and data between :start_date and :end_date"
+	      	+" GROUP BY id_plano_conta, descricao) as x "
+			+" LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y")
 	List<CategorizedTransactionAuxiliary> findIngoingValueSumByCategorizedAccountPlan(
 											@Param("id_conta") Long idContaOrigem,
 											@Param("start_date") LocalDate data_start, 
 											@Param("end_date") LocalDate data_end); 
 	
 	//Custom query to sum incoming values divided by category
-	@Query(nativeQuery = true, value = "SELECT y.somaValor as valueSum, y.descricao as transactionTypeDescription from "
-									+ "( SELECT * FROM (SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta "
-									+ "from lancamentos l where l.id_conta_origem= :id_conta and data between :start_date and :end_date "
-									+ "GROUP BY id_plano_conta, l.descricao) as x LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y;")
+	@Query(nativeQuery = true, value = "SELECT y.somaValor as value, y.descricao as description from (" 
+		  	+" SELECT * FROM ( SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta" 
+	      	+" from lancamentos l where l.id_conta_origem= :id_conta" 
+	      	+" and data between :start_date and :end_date"
+	      	+" GROUP BY id_plano_conta, descricao) as x "
+			+" LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y")
 	List<CategorizedTransactionAuxiliary> findOutgoingValueSumByCategorizedAccountPlan(
 											@Param("id_conta") Long idContaOrigem,
 											@Param("start_date") LocalDate data_start, 
