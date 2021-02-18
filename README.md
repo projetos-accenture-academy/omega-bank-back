@@ -9,14 +9,17 @@ Bem vindo ao repositório do grupo Ômega, abaixo estão descritos os meios de a
 
 
 
-### Mapa do site:
+### Wiki
 
 * Na página [Introdução](https://github.com/projetos-accenture-academy/omega-bank-back/wiki/Introdução) está uma breve introdução do escopo base do projeto.
 * Na página [Autores e participação](https://github.com/projetos-accenture-academy/omega-bank-back/wiki/Autores-e-Participa%C3%A7%C3%A3o) são apresentados os integrantes que trabalharam no projeto, além de suas responsabilidades como parte dele.
 * Na página [Funcionalidades do sistema](https://github.com/projetos-accenture-academy/omega-bank-back/wiki/Funcionalidades-do-sistema) está o resumo das funcionalidades implementadas para acesso através de uma API REST.
 * Na página [Tecnologias](https://github.com/projetos-accenture-academy/omega-bank-back/wiki/TEcnologias) estão os links do que utilizamos para desenvolver a API.
 
+### Links importantes
 
+* [Documentação Swagger](https://omegabank-backend.herokuapp.com/swagger-ui.html#/)
+* [Base API](https://omegabank-backend.herokuapp.com/)
 
 
 ### Fluxo de uso da API REST
