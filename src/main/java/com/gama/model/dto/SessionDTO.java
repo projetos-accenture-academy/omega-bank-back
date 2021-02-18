@@ -14,6 +14,8 @@ public class SessionDTO {
 
 	private Date tokenExpirationTime;
 	private Date tokenExpeditionTime;
+	
+	private UserSessionDTO user;
 
 	private List<Account> accounts;
 	private List<AccountPlan> plans;
@@ -23,7 +25,7 @@ public class SessionDTO {
 	}
 	
 
-	public SessionDTO(String login, String token, Date tokenExpirationTime, Date tokenExpeditionTime, List<Account> accounts, List<AccountPlan> plans ) {
+	public SessionDTO(String login, String token, Date tokenExpirationTime, Date tokenExpeditionTime, List<Account> accounts, List<AccountPlan> plans, UserSessionDTO userdto) {
 
 		super();
 		this.login = login;
@@ -32,7 +34,21 @@ public class SessionDTO {
 		this.tokenExpeditionTime = tokenExpeditionTime;
 		this.accounts = accounts;
 		this.plans = plans;
+		this.user = userdto;
 	}
+
+	
+	
+	
+	public UserSessionDTO getUser() {
+		return user;
+	}
+
+
+	public void setUser(UserSessionDTO user) {
+		this.user = user;
+	}
+
 
 	public String getToken() {
 		return token;

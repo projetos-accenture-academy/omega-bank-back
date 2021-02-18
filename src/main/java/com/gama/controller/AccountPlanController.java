@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gama.exceptions.AccountPlanAlreadyExistsException;
 import com.gama.model.AccountPlan;
+import com.gama.model.User;
 import com.gama.model.dto.AccountPlanDTO;
 import com.gama.repository.AccountPlanRepository;
 import com.gama.repository.UserRepository;
@@ -83,15 +84,15 @@ public class AccountPlanController {
 	 */
 	@CrossOrigin
 	@GetMapping(value = "/{userId}")
-	public List<AccountPlan> getAccountPlansByUserId(@RequestParam int userId) {
+	public Object getAccountPlansByUserId(@PathVariable int userId) {
 		try {
-			return apService.getAccountPlansByUserId(userId);
+			return (List<AccountPlan>) apService.getAccountPlansByUserId(userId);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		
-		return null;
 	}
 
 	/**
@@ -105,8 +106,12 @@ public class AccountPlanController {
 	@CrossOrigin
 	@PostMapping()
 	public ResponseEntity<AccountPlan> addAccountPlan(@RequestBody AccountPlanDTO accountPlanDTO)
-			throws IllegalArgumentException, AccountPlanAlreadyExistsException, Exception {		
-		AccountPlan ap = AccountPlanDTO.transformToObject(accountPlanDTO, userRepo);		
+			throws IllegalArgumentException, AccountPlanAlreadyExistsException, Exception {	
+		//AccountPlan ap = AccountPlanDTO.transformToObject(accountPlanDTO, userRepo);		
+		
+		User user = userRepo.findByLogin(accountPlanDTO.getLogin());
+		AccountPlan ap = new AccountPlan(user, accountPlanDTO.getDescription(), accountPlanDTO.getType());
+		
 		return new ResponseEntity<>(apService.saveAccountPlan(ap), HttpStatus.CREATED);		
 	}
 

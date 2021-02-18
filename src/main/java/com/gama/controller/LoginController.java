@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gama.model.Login;
 import com.gama.model.User;
 import com.gama.model.dto.SessionDTO;
+import com.gama.model.dto.UserSessionDTO;
 import com.gama.repository.UserRepository;
 import com.gama.security.JWTConstants;
 import io.jsonwebtoken.Jwts;
@@ -32,6 +34,9 @@ public class LoginController {
 	
 	@Autowired
 	private PasswordEncoder encoder;
+	
+	@Autowired
+	private ModelMapper modelMapper = new ModelMapper();
 	
 	/**
 	 * Realiza o login de um usuário
@@ -62,6 +67,8 @@ public class LoginController {
 		sessao.setTokenExpirationTime(new Date(System.currentTimeMillis() + tempoToken));
 		
 		sessao.setLogin(usuario.getLogin());
+		
+		sessao.setUser(modelMapper.map(usuario, UserSessionDTO.class));
 
 		sessao.setToken(JWTConstants.PREFIX + getJWTToken(sessao));
 
