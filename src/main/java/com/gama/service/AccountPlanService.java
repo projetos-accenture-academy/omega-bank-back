@@ -39,14 +39,14 @@ public class AccountPlanService {
 			throws IllegalArgumentException, AccountPlanAlreadyExistsException, Exception {
 		if (accountPlan != null) {
 			// Validates passed description			
-			Validator.isEmptyValue(accountPlan.getdescription(), "O Plano de conta necessita de uma descrição");
-			Validator.isEmptyValue(accountPlan.getuser(), "O Plano de conta deve estar associado a um usuário");
+			Validator.isEmptyValue(accountPlan.getDescription(), "O Plano de conta necessita de uma descrição");
+			Validator.isEmptyValue(accountPlan.getUser(), "O Plano de conta deve estar associado a um usuário");
 
-			boolean accountPlanExists = accPlanRepo.existsByUserAndDescription(accountPlan.getuser(),
-					accountPlan.getdescription());
+			boolean accountPlanExists = accPlanRepo.existsByUserAndDescription(accountPlan.getUser(),
+					accountPlan.getDescription());
 			if (accountPlanExists && accountPlan.getId() == null) {
 				throw new AccountPlanAlreadyExistsException("Não é possível adicionar o Plano de Conta '"
-						+ accountPlan.getdescription() + "' ao usuário " + accountPlan.getuser().getNome()
+						+ accountPlan.getDescription() + "' ao usuário " + accountPlan.getUser().getNome()
 						+ ". Já existe um registro associado a este usuário.");
 			} else {
 				// Adds or updates the given account plan

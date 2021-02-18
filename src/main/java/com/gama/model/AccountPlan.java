@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.gama.enums.TransactionType;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -27,6 +28,9 @@ public class AccountPlan {
 	@Column(nullable = false, name = "descricao")
 	private String description;
 
+	@Column(nullable = false, name = "tipo")
+	private TransactionType type;
+
 	public AccountPlan() {
 	}
 
@@ -37,29 +41,38 @@ public class AccountPlan {
 	 * @param user
 	 * @param description
 	 */
-	public AccountPlan(User user, String description) {
+	public AccountPlan(User user, String description, TransactionType type) {
 		this.user = user;
 		this.description = description;
+		this.type = type;
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public User getuser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setuser(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
-	public String getdescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setdescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public TransactionType getType() {
+		return type;
+	}
+
+	public void setType(TransactionType type) {
+		this.type = type;
 	}
 
 }

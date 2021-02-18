@@ -1,11 +1,11 @@
 package com.gama.model.dto;
 
-import com.gama.enums.TipoConta;
+import com.gama.enums.AccountType;
 
 public class AccountDTO {
 	
 	private int id;
-	private TipoConta tipo;
+	private AccountType tipo;
 	private String numero;
 	private double saldo;
 	private String descricao;
@@ -17,7 +17,7 @@ public class AccountDTO {
 		return id;
 	}
 	
-	public TipoConta getTipo() {
+	public AccountType getTipo() {
 		return tipo;
 	}
 
