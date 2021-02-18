@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.gama.enums.TipoConta;
@@ -22,6 +23,9 @@ public class UserService {
 	@Autowired
 	private AccountService accountService;
 		
+	@Autowired
+	PasswordEncoder encoder;
+	
 	private UserValidator userValidator;
 
 	public User salvarUsuario(User user) throws Exception {
@@ -40,6 +44,8 @@ public class UserService {
 			throw new Exception("Nome de login já cadastrado!");
 		}
 		
+		
+		user.setSenha(encoder.encode(user.getSenha()));
 		User newUser = usuarioRepository.save(user);
 		
 		Account accountCC = new Account(newUser, TipoConta.CC);
