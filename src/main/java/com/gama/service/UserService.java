@@ -73,7 +73,7 @@ public class UserService {
 		return usuarioRepository.findById(id);
 	}
 
-	public Optional<User> findUsuarioByLogin(String login) {
+	public User findUsuarioByLogin(String login) {
 		return usuarioRepository.findByLogin(login);
 	}
 

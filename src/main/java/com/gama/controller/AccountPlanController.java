@@ -19,6 +19,7 @@ import com.gama.exceptions.AccountPlanAlreadyExistsException;
 import com.gama.model.AccountPlan;
 import com.gama.model.dto.AccountPlanDTO;
 import com.gama.repository.AccountPlanRepository;
+import com.gama.repository.UserRepository;
 import com.gama.service.AccountPlanService;
 
 @RestController
@@ -27,12 +28,12 @@ public class AccountPlanController {
 
 	@Autowired
 	AccountPlanRepository apRepo;
+	
+	@Autowired
+	UserRepository userRepo;
 
 	@Autowired
 	AccountPlanService apService;
-
-	@Autowired
-	private ModelMapper modelMapper = new ModelMapper();
 
 //	/**
 //	 * Retorna todos os Planos de Conta existentes
@@ -104,9 +105,9 @@ public class AccountPlanController {
 	@CrossOrigin
 	@PostMapping()
 	public ResponseEntity<AccountPlan> addAccountPlan(@RequestBody AccountPlanDTO accountPlanDTO)
-			throws IllegalArgumentException, AccountPlanAlreadyExistsException, Exception {
-		return new ResponseEntity<>(apService.saveAccountPlan(modelMapper.map(accountPlanDTO, AccountPlan.class)),
-				HttpStatus.CREATED);
+			throws IllegalArgumentException, AccountPlanAlreadyExistsException, Exception {		
+		AccountPlan ap = AccountPlanDTO.transformToObject(accountPlanDTO, userRepo);		
+		return new ResponseEntity<>(apService.saveAccountPlan(ap), HttpStatus.CREATED);		
 	}
 
 	// no PUT for AccountPlan (for initial version, at least)

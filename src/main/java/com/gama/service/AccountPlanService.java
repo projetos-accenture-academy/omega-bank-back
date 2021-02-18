@@ -3,12 +3,14 @@ package com.gama.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gama.exceptions.AccountPlanAlreadyExistsException;
 import com.gama.model.AccountPlan;
 import com.gama.model.User;
+import com.gama.model.dto.AccountPlanDTO;
 import com.gama.repository.AccountPlanRepository;
 import com.gama.repository.UserRepository;
 import com.gama.utils.Validator;
@@ -21,7 +23,7 @@ public class AccountPlanService {
 	
 	@Autowired
 	private UserRepository userRepository;	
-
+	
 	/**
 	 * Insere um novo Plano de Conta na base de dados, validando se já existe um com
 	 * a mesma descrição e usuário antes de realizar a inserção.
