@@ -225,6 +225,7 @@ public class TransactionController {
 	 * @throws TransactionAlreadyExistsException 
 	 * @throws IllegalArgumentException 
 	 */
+	@CrossOrigin
 	@PostMapping(produces="application/json", consumes="application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionDTO transactionDTO) throws IllegalArgumentException, TransactionAlreadyExistsException, Exception {
