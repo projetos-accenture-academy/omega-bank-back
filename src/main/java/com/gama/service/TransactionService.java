@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.gama.enums.AccountType;
 import com.gama.enums.TransactionType;
+import com.gama.exceptions.BalanceNotEnoughException;
 import com.gama.exceptions.TransactionAlreadyExistsException;
 import com.gama.model.Account;
 import com.gama.model.Transaction;
@@ -81,12 +82,19 @@ public class TransactionService {
 				throw new IllegalArgumentException("O Lançamento necessita de ao menos uma conta definida");
 			}
 		
-			
+			Account sourceAccount;
 			//Based on transaction type, check if the source/destination value is valid
 			switch(transaction.getTransactionType())
 			{
 			case "T":
-
+				//if source account doesn't have enough money, send out an exception
+				sourceAccount = accountRepository.findByNumeroAndTipo(transaction.getSourceAccountName(), AccountType.getAccountType(transaction.getSourceAccountType()));
+				
+				if(sourceAccount.getSaldo()<transaction.getValue())
+				{
+					throw new BalanceNotEnoughException(transaction.getValue());
+				}
+				
 				//If money is coming into user account, AccountPlan is a default one
 				transaction.setAccountPlanDescription("RECEITA");
 				
@@ -96,6 +104,14 @@ public class TransactionService {
 				}
 				break;
 			case "D":
+				//if source account doesn't have enough money, send out an exception
+				sourceAccount = accountRepository.findByNumeroAndTipo(transaction.getSourceAccountName(), AccountType.getAccountType(transaction.getSourceAccountType()));
+				
+				if(sourceAccount.getSaldo()<transaction.getValue())
+				{
+					throw new BalanceNotEnoughException(transaction.getValue());
+				}
+				
 				if(transaction.getDestinationAccountName()!=null || transaction.getSourceAccountName()==null)
 				{
 					throw new IllegalArgumentException("O Lançamento(Despesa) necessita de conta de origem definida e destino nula");
