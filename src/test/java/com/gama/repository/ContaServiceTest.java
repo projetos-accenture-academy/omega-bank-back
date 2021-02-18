@@ -104,7 +104,7 @@ public class ContaServiceTest {
     	assertEquals("Não é possível obter uma lista de contas através de uma referência nula de usuário", exception.getMessage());
     }
     
-    @Test
+    /*@Test
     @DisplayName("Tentativa falha de pesquisar uma conta sem passar um número válido")
     public void obterContaComParamNull() throws Exception {
 
@@ -113,7 +113,7 @@ public class ContaServiceTest {
     	});
     	
     	assertEquals("Não é possível pesquisar uma conta através de uma parâmetro nulo", exception.getMessage());
-    }
+    }*/
     
     @Test
     @DisplayName("Inibir a remoção uma conta com valor null")
@@ -127,11 +127,11 @@ public class ContaServiceTest {
     }
     
 
-    @Test
+    /*@Test
     @DisplayName("Obter uma conta sem um número válido")
     public void obterContaSemNumero() throws Exception {    	
     	assertNull(accountService.getAccountByNumber("vazio"));
-    }
+    }*/
     
     
 	@Test
@@ -171,12 +171,12 @@ public class ContaServiceTest {
 
     }
     
-    @Test
+    /*@Test
     @Order(3)
     @DisplayName("Obter uma conta através do seu número")
     public void obterConta() throws Exception {
     	assertNotNull(accountService.getAccountByNumber(usuarioTeste.getLogin()));
-    }
+    }*/
     
     @Test
     @Order(4)
@@ -189,7 +189,7 @@ public class ContaServiceTest {
     	assertEquals(1, todasContas.size());
     }
     
-    @Test
+    /*@Test
     @Order(5)
     @DisplayName("Deletar uma conta de um usuário")
     public void deletarConta() throws Exception {
@@ -201,5 +201,5 @@ public class ContaServiceTest {
     	
     	assertNull(accountService.getAccountByNumber(conta.getNumero()));
     	
-    }
+    }*/
 }
