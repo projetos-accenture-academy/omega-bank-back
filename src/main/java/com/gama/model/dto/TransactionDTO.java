@@ -22,6 +22,11 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class TransactionDTO {
 	
+
+
+	@ApiModelProperty(value = "ID da movimentação")
+	private Long id=null;
+	
 	@ApiModelProperty(value = "Tipo", required = true)
 	private TransactionType transactionType;
 	
@@ -44,9 +49,6 @@ public class TransactionDTO {
 	private String description;		
 	
 	
-	
-	
-
 	
 	public TransactionDTO()
 	{
@@ -84,8 +86,17 @@ public class TransactionDTO {
 		Account sourceAccount = acRepo.findByNumero(transactionDTO.getSourceAccountName());
 		Account destinationAccount = acRepo.findByNumero(transactionDTO.getDestinationAccountName());
 
-		
-		AccountPlan acp = apr.findByUserAndDescription(sourceAccount.getUsuario(), transactionDTO.getAccountPlanDescription());
+		AccountPlan acp = null;
+		if(sourceAccount==null || sourceAccount.getUsuario()==null)
+		{
+			//Money deposit, no source, so AccountPlan has a default value from the DESTINATION account
+			acp = apr.findByUserAndDescription(destinationAccount.getUsuario(), transactionDTO.getAccountPlanDescription());
+		}
+		else //transaction or withdrawal, so it gets Account plan from the source, as it should
+		{
+			acp = apr.findByUserAndDescription(sourceAccount.getUsuario(), transactionDTO.getAccountPlanDescription());
+		}
+		 
 		
 		
 		return new Transaction(acp, sourceAccount, destinationAccount, transactionDTO.getDate(), transactionDTO.getValue(), 
@@ -94,7 +105,13 @@ public class TransactionDTO {
 	
 	
 	
-	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}	
 	
 	
 	public String getAccountPlanDescription() {
@@ -117,7 +134,7 @@ public class TransactionDTO {
 		return destinationAccountName;
 	}
 
-	public void setDestinationAccount(String destinationAccount) {
+	public void setDestinationAccountName(String destinationAccount) {
 		this.destinationAccountName = destinationAccount;
 	}
 	
