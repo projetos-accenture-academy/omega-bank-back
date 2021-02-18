@@ -37,7 +37,7 @@ public class AccountService{
 	 * @return
 	 * @throws Exception 
 	 */
-	public Account saveAccount(Account account) throws IllegalArgumentException, Exception{
+	public Account saveAccount(Account account) throws IllegalArgumentException, AccountAlreadyExistsException, Exception{
 		if(account != null) {
 			/*
 			 * Realiza validações quanto ao valor do atributo usuario da conta
@@ -49,7 +49,7 @@ public class AccountService{
 			boolean contaExistente = accountRepository.existsByNumeroAndTipo(account.getNumero(), account.getTipo());
 	
 			if (contaExistente && account.getId() == null)
-				throw new Exception("Não é possível adicionar a conta Nº " + 
+				throw new AccountAlreadyExistsException("Não é possível adicionar a conta Nº " + 
 						account.getNumero() + 
 						" pois já existe um registro com esse número.");
 			else
@@ -110,7 +110,7 @@ public class AccountService{
 	 * @throws Exception  Se o parâmetro de busca "usuario" for null
 	 */
 	public List<Account> getAccountsByUser(User usuario) throws Exception {
-		Validator.isEmptyValue(usuario, "Não é possível obter uma lista de contas através de uma referência nula de usuário.");
+		Validator.isEmptyValue(usuario, "Não é possível obter uma lista de contas através de uma referência nula de usuário");
 		return accountRepository.findByUsuario(usuario);
 	}
 	
@@ -121,8 +121,10 @@ public class AccountService{
 	 * @return Conta
 	 * @throws Exception 
 	 */
+
 	public Account getAccountByNumberAndType(String number, AccountType type) throws Exception {
 		Validator.isEmptyValue(number, "Não é possível pesquisar uma conta através de uma parâmetro nulo.");
+
 
 		return accountRepository.findByNumeroAndTipo(number, type);
 	}
@@ -133,7 +135,7 @@ public class AccountService{
 	 * @throws Exception Se o parâmetro de conta para remoção for null
 	 */
 	public void removeAccount(Account account) throws Exception {	
-		Validator.isEmptyValue(account, "Não é possível remover uma conta através de uma referência nula.");
+		Validator.isEmptyValue(account, "Não é possível remover uma conta através de uma referência nula");
 
 		accountRepository.delete(account);
 	}
