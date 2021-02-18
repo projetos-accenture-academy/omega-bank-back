@@ -1,6 +1,6 @@
 package com.gama.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,21 +42,21 @@ public class Transaction {
 	@ManyToOne
 	private Account destinationAccount;
 	
-	@Column
+	@Column(name = "data")
 	@NotNull
-	private Date date;
+	private LocalDate date;
 
-	@Column
+	@Column(name = "valor")
 	@NotNull
 	private Double value;
 	
-	@Column(length = 100)
+	@Column(length = 100, name = "descricao")
 	private String description;
 	
 	public Transaction()
 	{ }	
 	
-	public Transaction(AccountPlan accountPlan, Account sourceAccount, Account destinationAccount, Date date,
+	public Transaction(AccountPlan accountPlan, Account sourceAccount, Account destinationAccount, LocalDate date,
 			Double value, String description) {
 		
 		this.accountPlan = accountPlan;
@@ -87,11 +87,11 @@ public class Transaction {
 		this.destinationAccount = destinationAccount;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

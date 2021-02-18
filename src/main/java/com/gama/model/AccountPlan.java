@@ -28,9 +28,6 @@ public class AccountPlan {
 	@Column(nullable = false, name = "descricao")
 	private String description;
 
-	@Column(nullable = false, name = "tipo")
-	private TransactionType type;
-
 	public AccountPlan() {
 	}
 
@@ -41,10 +38,9 @@ public class AccountPlan {
 	 * @param user
 	 * @param description
 	 */
-	public AccountPlan(User user, String description, TransactionType type) {
+	public AccountPlan(User user, String description) {
 		this.user = user;
 		this.description = description;
-		this.type = type;
 	}
 
 	public Integer getId() {
@@ -65,14 +61,6 @@ public class AccountPlan {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public TransactionType getType() {
-		return type;
-	}
-
-	public void setType(TransactionType type) {
-		this.type = type;
 	}
 
 }

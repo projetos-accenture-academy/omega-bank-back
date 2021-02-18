@@ -30,9 +30,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	
 	//Custom query to sum incoming values divided by category
 	@Query(nativeQuery = true, value = "SELECT y.somaValor as valueSum, y.descricao as transactionTypeDescription from "
-									+ "( SELECT * FROM (SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta "
+									+ "( SELECT * FROM ( SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta "
 									+ "from lancamentos l where l.id_conta_destino= :id_conta and data between :start_date and :end_date "
-									+ "GROUP BY id_plano_conta) as x LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y;")
+									+ "GROUP BY id_plano_conta, l.descricao) as x LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y;")
 	List<CategorizedTransactionAuxiliary> findIngoingValueSumByCategorizedAccountPlan(
 											@Param("id_conta") Long idContaOrigem,
 											@Param("start_date") LocalDate data_start, 
@@ -42,7 +42,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	@Query(nativeQuery = true, value = "SELECT y.somaValor as valueSum, y.descricao as transactionTypeDescription from "
 									+ "( SELECT * FROM (SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta "
 									+ "from lancamentos l where l.id_conta_origem= :id_conta and data between :start_date and :end_date "
-									+ "GROUP BY id_plano_conta) as x LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y;")
+									+ "GROUP BY id_plano_conta, l.descricao) as x LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y;")
 	List<CategorizedTransactionAuxiliary> findOutgoingValueSumByCategorizedAccountPlan(
 											@Param("id_conta") Long idContaOrigem,
 											@Param("start_date") LocalDate data_start, 
