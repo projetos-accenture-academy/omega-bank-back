@@ -339,7 +339,7 @@ public class TransactionService {
 	 * @param endDate Data de fim da busca
 	 * @return
 	 */
-	public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan(Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
+	public Iterable<Transaction> getIngoingTransactionsCategorizedByAccountPlan(Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
 	{
 		return transactionRepository.findIngoingValueSumByCategorizedAccountPlan(idIngoingAccount, startDate, endDate);
 	}
@@ -352,7 +352,7 @@ public class TransactionService {
 	 * @param endDate Data de fim da busca
 	 * @return
 	 */
-	public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan(Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
+	public Iterable<Transaction> getOutgoingTransactionsCategorizedByAccountPlan(Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
 	{
 		return transactionRepository.findOutgoingValueSumByCategorizedAccountPlan(idOutgoingAccount, startDate, endDate);
 	}

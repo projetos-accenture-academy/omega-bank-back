@@ -29,25 +29,27 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	List<Transaction> findByDestinationAccountAndDateBetween(Account destinationAccount, LocalDate startDate, LocalDate endDate);
 	
 	//Custom query to sum incoming values divided by category
-	@Query(nativeQuery = true, value = "SELECT y.somaValor as value, y.descricao as description from (" 
+	@Query(nativeQuery = true, value = "SELECT 0 as id, :start_date as data, y.somaValor as valor, y.descricao as descricao, y.id_plano_conta, "
+			+ ":id_conta as id_conta_destino, null as id_conta_origem from (" 
 		  	+" SELECT * FROM ( SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta" 
 	      	+" from lancamentos l where l.id_conta_destino= :id_conta" 
 	      	+" and data between :start_date and :end_date"
 	      	+" GROUP BY id_plano_conta, descricao) as x "
 			+" LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y")
-	List<CategorizedTransactionAuxiliary> findIngoingValueSumByCategorizedAccountPlan(
+	List<Transaction> findIngoingValueSumByCategorizedAccountPlan(
 											@Param("id_conta") Long idContaOrigem,
 											@Param("start_date") LocalDate data_start, 
 											@Param("end_date") LocalDate data_end); 
 	
 	//Custom query to sum incoming values divided by category
-	@Query(nativeQuery = true, value = "SELECT y.somaValor as value, y.descricao as description from (" 
+	@Query(nativeQuery = true, value = "SELECT 0 as id, :start_date as data, y.somaValor as valor, y.descricao as descricao, y.id_plano_conta, " 
+			+ ":id_conta as id_conta_origem, null as id_conta_destino from (" 
 		  	+" SELECT * FROM ( SELECT SUM(valor) as somaValor, descricao as d, id_plano_conta" 
 	      	+" from lancamentos l where l.id_conta_origem= :id_conta" 
 	      	+" and data between :start_date and :end_date"
 	      	+" GROUP BY id_plano_conta, descricao) as x "
 			+" LEFT JOIN planos_conta pc ON x.id_plano_conta = pc.id) as y")
-	List<CategorizedTransactionAuxiliary> findOutgoingValueSumByCategorizedAccountPlan(
+	List<Transaction> findOutgoingValueSumByCategorizedAccountPlan(
 											@Param("id_conta") Long idContaOrigem,
 											@Param("start_date") LocalDate data_start, 
 											@Param("end_date") LocalDate data_end);	
