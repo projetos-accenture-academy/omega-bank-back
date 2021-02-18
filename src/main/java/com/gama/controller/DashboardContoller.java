@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gama.model.Account;
@@ -75,6 +72,54 @@ public class DashboardContoller {
 				AccountDTO accDto = DashboardDTO.transformToAccountDTO(account, transactions);
 			
 				accounts.add(accDto);
+			}
+			
+			dash.setNumberOfAccounts(accounts.size());		
+			dash.setAccounts(accounts);
+			
+			//return dash;
+			return new ResponseEntity<>(dash, HttpStatus.OK);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
+	@CrossOrigin
+	@GetMapping(path="/{accountType}", produces="application/json")
+	public Object getDashboardByAccount(@PathVariable String accountType, @RequestParam("login") String login, 
+			@RequestParam("dataInicial") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dateInitial, 
+			@RequestParam("dataFinal") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dateEnd) throws Exception
+	{
+
+		try {
+			if(dateInitial.isAfter(dateEnd))
+				return new ResponseEntity<>("A data de fim não pode ser menor que a de início", HttpStatus.ACCEPTED);
+
+			User user = userService.findUserByLogin(login);
+			
+			DashboardDTO dash = new DashboardDTO();
+
+			List<AccountDTO> accounts = new ArrayList<AccountDTO>();
+			
+			for (Account account : accountService.getAccountsByUser(user)) {
+System.out.println(accountType + " " + account.getTipo().toString() + " " + account.getTipo().toString().equals(accountType));
+				if(account.getTipo().toString().equals(accountType)) {
+				List<TransactionDTO> trsDtoS =  (List<TransactionDTO>) transactionService
+						.getTransactionsByDestinationAccountAndDateBetween(account.getNumero(), account.getTipo().toString(), dateInitial, dateEnd);
+
+				List<TransactionDTO> trsDtoD =  (List<TransactionDTO>) transactionService
+						.getTransactionsBySourceAccountAndDateBetween(account.getNumero(), account.getTipo().toString(), dateInitial, dateEnd);
+
+				List<TransactionDTO> transactions = new ArrayList<TransactionDTO>();
+				transactions.addAll(trsDtoD);
+				transactions.addAll(trsDtoS);
+				
+				AccountDTO accDto = DashboardDTO.transformToAccountDTO(account, transactions);
+			
+				accounts.add(accDto);
+				}
 			}
 			
 			dash.setNumberOfAccounts(accounts.size());		
