@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gama.enums.TransactionType;
+import com.gama.exceptions.TransactionAlreadyExistsException;
 import com.gama.model.Account;
+import com.gama.model.AccountPlan;
 import com.gama.model.Transaction;
 import com.gama.model.User;
+import com.gama.model.dto.AccountPlanDTO;
 import com.gama.model.dto.TransactionDTO;
-import com.gama.model.dto.response.TransactionDTOResponse;
 import com.gama.service.TransactionService;
 import com.gama.utils.CategorizedTransactionAuxiliary;
 
@@ -34,86 +36,211 @@ public class TransactionController {
 	@Autowired
 	private ModelMapper modelMapper = new ModelMapper();
 	
-	@CrossOrigin
-	@PostMapping(produces="application/json", consumes="application/json")
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public String novaTransacao(@RequestBody TransactionDTO transactionDTO, TransactionType type) {
-		try {
-			transactionService.addTransaction(modelMapper.map(transactionDTO, Transaction.class), type);
-			return "Transação realizada com sucesso!";
-		} catch (Exception e) {
-			return e.getMessage();
-		}
-	}
 	
-	@CrossOrigin
+	
+	//--------------------------------------------------------GET---------------------------------------------------------------
+	
+	
+	/**
+	 * Retorna um Lançamento específico a partir de seu ID
+	 * @param id
+	 * @return
+	 * @throws Exception 
+	 * @throws IllegalArgumentException 
+	 */
 	@GetMapping(path = "/{id}", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public TransactionDTOResponse getTransaction(Long id)	{
-		return modelMapper.map(transactionService.getTransaction(id), TransactionDTOResponse.class);
+	public TransactionDTO getTransaction(Long id) throws IllegalArgumentException, Exception	{
+		return transactionService.getTransaction(id);
+		
 	}
-
-	// @GetMapping(path = "/all", produces="application/json")
-	// @ResponseStatus(value = HttpStatus.OK)
-	// public Iterable<Transaction> getAllTransactions()
-	// {
-		// return transactionService.getAllTransactions();
-	// }
-
-	@GetMapping(path = "/{sourceAccount}", produces="application/json")
+	
+	
+	/**
+	 * Retorna TODOS os Lançamentos existentes na base (Apenas para teste)
+	 * @return Uma Lista com todos os Lançamentos na Base de Dados
+	 * @throws IllegalArgumentException
+	 * @throws Exception
+	 */
+	@GetMapping(path = "/all", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<Transaction> getTransactionsBySourceAccount(Account sourceAccount)
+	public Iterable<TransactionDTO> getAllTransactions() throws IllegalArgumentException, Exception
 	{
-		return transactionService.getTransactionsBySourceAccount(sourceAccount);
+		return transactionService.getAllTransactions();
+	}
+
+	/**
+	 * Retorna todas as Transações que tenham como ContaOrigem com nome/número equivalente ao passado para a função
+	 * @param sourceAccountName Nome da Conta de Origem
+	 * @return Uma lista com TODAS as Transações da conta Origem especificada
+	 * @throws IllegalArgumentException
+	 * @throws Exception
+	 */
+	@GetMapping(path = "/sourceAccount/{sourceAccountName}", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
+	public Iterable<TransactionDTO> getTransactionsBySourceAccount(String sourceAccountName) throws IllegalArgumentException, Exception
+	{
+		return transactionService.getTransactionsBySourceAccount(sourceAccountName);
 	}
 	
-	// @GetMapping(path = "/{destinationAccount}", produces="application/json")
-	// @ResponseStatus(value = HttpStatus.OK)
-	// public Iterable<Transaction> getTransactionsByDestinationAccount(Account destinationAccount)
-	// {
-		// return transactionService.getTransactionsByDestinationAccount(destinationAccount);
-	// }
 	
-	// @GetMapping(path = "/{date}", produces="application/json")
-	// @ResponseStatus(value = HttpStatus.OK)
-	// public Iterable<Transaction> getTransactionsByDate(LocalDate date)
-	// {
-		// return transactionService.getTransactionsByDate(date);
-	// }
 	
-	@GetMapping(path = "/{byDateRange}", produces="application/json")
+	/**
+	 * Retorna todas as Transações que tenham como Conta de Destino com nome/número equivalente ao passado para a função
+	 * @param destinationAccount Nome da Conta de Destino
+	 * @return Uma lista com TODAS as Transações da conta Destino especificada
+	 * @throws Exception 
+	 * @throws IllegalArgumentException 
+	 */
+	@GetMapping(path = "/destinationAccount/{destinationAccount}", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<Transaction> getTransactionsByDateRange(LocalDate startDate, LocalDate endDate)
+	public Iterable<TransactionDTO> getTransactionsByDestinationAccount(String destinationAccountName) throws IllegalArgumentException, Exception
+	{
+		return transactionService.getTransactionsByDestinationAccount(destinationAccountName);
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Retorna todas as Transações na Base de dados que tenham data equivalente a passada para a função
+	 * @param date Data escolhida
+	 * @return Uma lista com TODAS as Transações na base com a data especificada
+	 * @throws Exception 
+	 * @throws IllegalArgumentException 
+	 */
+	@GetMapping(path = "/date", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
+	public Iterable<TransactionDTO> getTransactionsByDate(@RequestBody LocalDate date) throws IllegalArgumentException, Exception
+	{
+		return transactionService.getTransactionsByDate(date);
+	}
+	
+	
+	
+	/**
+	 * Retorna todas as Transações na Base de dados que estejam entre a data de inicio e de fim da busca
+	 * @param startDate Data de início da busca
+	 * @param endDate Data de fim da busca
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws Exception
+	 */
+	@GetMapping(path = "/dateRange", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
+	public Iterable<TransactionDTO> getTransactionsByDateRange(@RequestBody LocalDate startDate, @RequestBody LocalDate endDate) throws IllegalArgumentException, Exception
 	{
 		return transactionService.getTransactionsByDateRange(startDate, endDate);
 	}
 
-	// @GetMapping(path = "/{byAccountSourceAndDate}", produces="application/json")
-	// @ResponseStatus(value = HttpStatus.OK)
-	// public Iterable<Transaction> getTransactionsBySourceAccountAndDateBetween(Account sourceAccount, LocalDate startDate, LocalDate endDate)
-	// {
-		// return transactionService.getTransactionsBySourceAccountAndDateBetween(sourceAccount, startDate, endDate);
-	// }
 	
-	// @GetMapping(path = "/{byAccountDestinationAndDate}", produces="application/json")
-	// @ResponseStatus(value = HttpStatus.OK)
-	// public Iterable<Transaction> getTransactionsByDestinationAccountAndDateBetween(Account destinationAccount, LocalDate startDate, LocalDate endDate)
-	// {
-		// return transactionService.getTransactionsByDestinationAccountAndDateBetween(destinationAccount, startDate, endDate);
-	// }
+	/**
+	 * Retorna todas as Transações que tenham uma específica Conta Origem e estejam entre a data de inicio e de fim da busca
+	 * @param sourceAccountName Nome da conta de origem
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws Exception
+	 */
+	@GetMapping(path = "/sourceAccount/dateRange", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
+	public Iterable<TransactionDTO> getTransactionsBySourceAccountAndDateBetween(@RequestBody String sourceAccountName, 
+			@RequestBody LocalDate startDate, @RequestBody LocalDate endDate) throws IllegalArgumentException, Exception
+	{
+		return transactionService.getTransactionsBySourceAccountAndDateBetween(sourceAccountName, startDate, endDate);
+	}
 	
-	// @GetMapping(path = "/{inAccountPlan}", produces="application/json")
-	// @ResponseStatus(value = HttpStatus.OK)
-	// public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan(Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
-	// {
-		// return transactionService.getIngoingTransactionsCategorizedByAccountPlan(idIngoingAccount, startDate, endDate);
-	// }
 	
-	// @GetMapping(path = "/{outAccountSourceAndDate}", produces="application/json")
-	// @ResponseStatus(value = HttpStatus.OK)
-	// public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan(Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
-	// {
-		// return transactionService.getOutgoingTransactionsCategorizedByAccountPlan(idOutgoingAccount, startDate, endDate);
-	// }
+	/**
+	 * Retorna todas as Transações que tenham uma específica Conta Destino e estejam entre a data de inicio e de fim da busca
+	 * @param sourceAccountName Nome da conta de origem
+	 * @param startDate
+	 * @param endDate
+	 * @return Uma lista com todas as transações que estejam dentro das condições delimitadas
+	 * @throws IllegalArgumentException
+	 * @throws Exception
+	 */	
+	@GetMapping(path = "/destinationAccount/dateRange", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
+	public Iterable<TransactionDTO> getTransactionsByDestinationAccountAndDateBetween(@RequestBody String destinationAccountName, 
+			 @RequestBody LocalDate startDate, @RequestBody LocalDate endDate) throws IllegalArgumentException, Exception
+	{
+		return transactionService.getTransactionsByDestinationAccountAndDateBetween(destinationAccountName, startDate, endDate);
+	}
+	
+	
+	/**
+	 * Retorna uma lista de soma de valores Transações que entraram em uma conta dentro de um intervalo de datas, categorizadas por Plano de Conta
+	 * @param idIngoingAccount
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping(path = "/ingoingCategorizedTransactions", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
+	public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan(Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
+	{
+		return transactionService.getIngoingTransactionsCategorizedByAccountPlan(idIngoingAccount, startDate, endDate);
+	}
+	
+	/**
+	 * Retorna uma lista de soma de valores Transações que saíram em uma conta dentro de um intervalo de datas, categorizadas por Plano de Conta
+	 * @param idOutgoingAccount
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@GetMapping(path = "/outgoingCategorizedTransactions", produces="application/json")
+	@ResponseStatus(value = HttpStatus.OK)
+	public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan(Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
+	{
+		return transactionService.getOutgoingTransactionsCategorizedByAccountPlan(idOutgoingAccount, startDate, endDate);
+	}
 
+	
+	
+	
+	
+	//--------------------------------------------------------POST---------------------------------------------------------------
+	
+	/**
+	 * Cria um novo Lançamento na base de dados
+	 * @param transactionDTO
+	 * @param type
+	 * @return
+	 * @throws Exception 
+	 * @throws TransactionAlreadyExistsException 
+	 * @throws IllegalArgumentException 
+	 */
+	@PostMapping(produces="application/json", consumes="application/json")
+	@ResponseStatus(value = HttpStatus.CREATED)
+	public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionDTO transactionDTO) throws IllegalArgumentException, TransactionAlreadyExistsException, Exception {
+		
+		
+		TransactionType tt = TransactionType.R;;
+		
+		/*
+		switch(type)
+		{
+		case "R":
+			tt=TransactionType.R;
+			break;
+		case "D":
+			tt=TransactionType.R;
+			break;
+		case "T":
+			tt=TransactionType.R;
+			break;
+			
+		default:
+			throw new IllegalArgumentException();
+		}*/
+		
+		transactionService.addTransaction(transactionDTO, tt);
+		return new ResponseEntity<>(transactionDTO, HttpStatus.CREATED);
+		
+	}
+	
 }

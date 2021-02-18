@@ -29,7 +29,7 @@ public class UserController {
 	@PostMapping
 	public Object incluir(@RequestBody UserDTO userDTO) {
 		try {
-			return new ResponseEntity<User>(usuarioService.salvarUsuario(modelMapper.map(userDTO, User.class)), HttpStatus.CREATED);
+			return new ResponseEntity<User>(usuarioService.saveUser(modelMapper.map(userDTO, User.class)), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
@@ -39,7 +39,7 @@ public class UserController {
 	@PutMapping
 	public Object alterar(@RequestBody UserDTO userDTO) {
 		try {
-			return new ResponseEntity<User>(usuarioService.alterarUsuario(modelMapper.map(userDTO, User.class)), HttpStatus.OK);
+			return new ResponseEntity<User>(usuarioService.updateUser(modelMapper.map(userDTO, User.class)), HttpStatus.OK);
 		} catch (Exception e) {			
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
