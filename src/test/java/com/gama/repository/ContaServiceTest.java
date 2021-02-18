@@ -61,13 +61,11 @@ public class ContaServiceTest {
     @DisplayName("Inibir a criação de conta sem usuário associado")
     public void criarContaSemUsuario() throws Exception {  
     	
-        Exception exception = assertThrows(Exception.class, () -> {
+        assertThrows(Exception.class, () -> {
         	accountService.saveAccount(new Account(null, AccountType.CC));
         });
         
-        assertEquals("A conta necessita de um usuário associado", exception.getMessage());
-    	    	
-        exception = assertThrows(Exception.class, () -> {
+        Exception exception = assertThrows(Exception.class, () -> {
         	accountService.saveAccount(new Account(new User(), AccountType.CC));
         });
         

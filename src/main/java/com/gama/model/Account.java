@@ -47,7 +47,7 @@ public class Account {
 	}
 	
 	/**
-	 * Cria uma conta padrão do tipo <b>CC</b> para o usuário informado
+	 * Cria uma conta padrão para o usuário informado
 	 * @param usuario
 	 * @throws UsuarioNuloException 
 	 */
