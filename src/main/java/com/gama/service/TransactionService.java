@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.gama.enums.AccountType;
 import com.gama.enums.TransactionType;
 import com.gama.exceptions.TransactionAlreadyExistsException;
 import com.gama.model.Account;
@@ -48,7 +49,7 @@ public class TransactionService {
 			//Withdrawal
 			return TransactionType.D;
 		}
-		else if(t.getSourceAccount()!=null && t.getDestinationAccount()==null)
+		else if(t.getSourceAccount()!=null && t.getDestinationAccount()!=null)
 		{
 			return TransactionType.T;
 		}
@@ -169,7 +170,7 @@ public class TransactionService {
 	 */
 	public Iterable<TransactionDTO> getTransactionsBySourceAccount(String sourceAccountName, String sourceAccountType) throws IllegalArgumentException, Exception
 	{
-		Account sourceAccount = accountRepository.findByNumeroAndTipo(sourceAccountName, sourceAccountType);
+		Account sourceAccount = accountRepository.findByNumeroAndTipo(sourceAccountName, AccountType.getAccountType(sourceAccountType));
 		
 		Iterable<Transaction> transactions = transactionRepository.findBySourceAccount(sourceAccount);
 		
@@ -196,7 +197,7 @@ public class TransactionService {
 	public Iterable<TransactionDTO> getTransactionsByDestinationAccount(String destinationAccountName, 
 			String destinationAccountType) throws IllegalArgumentException, Exception
 	{
-		Account destinationAccount = accountRepository.findByNumeroAndTipo(destinationAccountName, destinationAccountType);
+		Account destinationAccount = accountRepository.findByNumeroAndTipo(destinationAccountName, AccountType.getAccountType(destinationAccountType));
 		
 		Iterable<Transaction> transactions = transactionRepository.findByDestinationAccount(destinationAccount);
 		
@@ -275,7 +276,7 @@ public class TransactionService {
 	public Iterable<TransactionDTO> getTransactionsBySourceAccountAndDateBetween(String sourceAccountName, String sourceAccountType, 
 			LocalDate startDate, LocalDate endDate) throws IllegalArgumentException, Exception
 	{
-		Account sourceAccount = accountRepository.findByNumeroAndTipo(sourceAccountName, sourceAccountType);
+		Account sourceAccount = accountRepository.findByNumeroAndTipo(sourceAccountName, AccountType.getAccountType(sourceAccountType));
 
 		
 		Iterable<Transaction> transactions = transactionRepository.findBySourceAccountAndDateBetween(sourceAccount, startDate, endDate);
@@ -307,7 +308,7 @@ public class TransactionService {
 			LocalDate startDate, LocalDate endDate) throws IllegalArgumentException, Exception
 	{
 
-		Account destinationAccount = accountRepository.findByNumeroAndTipo(destinationAccountName, destinationAccountType);
+		Account destinationAccount = accountRepository.findByNumeroAndTipo(destinationAccountName, AccountType.getAccountType(destinationAccountType));
 
 		
 		Iterable<Transaction> transactions = transactionRepository.findByDestinationAccountAndDateBetween(destinationAccount, startDate, endDate);

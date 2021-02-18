@@ -1,7 +1,6 @@
 package com.gama.model.dto;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class TransactionDTO {
 	
 
 	@ApiModelProperty(value = "Data", example = "01/01/2021", required = true)
-	private Date date;
+	private LocalDate date;
 	
 	@ApiModelProperty(value = "Valor", example = "0,00", required = true)
 	private Double value;
@@ -64,7 +63,7 @@ public class TransactionDTO {
 	}
 	
 	public TransactionDTO(String transactionType, String accountPlanDescription, String sourceAccountName, String sourceAccountType,
-			String destinationAccountName, String destinationAccountType, Date date, Double value, String description) {
+			String destinationAccountName, String destinationAccountType, LocalDate date, Double value, String description) {
 	
 		this.transactionType = transactionType;
 		this.accountPlanDescription = accountPlanDescription;
@@ -81,10 +80,10 @@ public class TransactionDTO {
 	public static TransactionDTO transformToTransactionDTO(Transaction transaction, TransactionType transactionType)
 	{
 		String sourceNumber = transaction.getSourceAccount()==null? null:transaction.getSourceAccount().getNumero();
-		String destinationNumber = transaction.getSourceAccount()==null? null:transaction.getDestinationAccount().getNumero();
+		String destinationNumber = transaction.getDestinationAccount()==null? null:transaction.getDestinationAccount().getNumero();
 		
 		String sourceType = sourceNumber==null? null: AccountType.getAccountTypeString(transaction.getSourceAccount().getTipo());
-		String destinationType = sourceNumber==null? null: AccountType.getAccountTypeString(transaction.getDestinationAccount().getTipo());
+		String destinationType = destinationNumber==null? null: AccountType.getAccountTypeString(transaction.getDestinationAccount().getTipo());
 		
 		return new TransactionDTO(TransactionType.typeToString(transactionType), transaction.getAccountPlan().getDescription(),
 				sourceNumber, sourceType, destinationNumber, destinationType, transaction.getDate(), 
@@ -97,8 +96,8 @@ public class TransactionDTO {
 			AccountPlanRepository apr)
 	{
 		
-		Account sourceAccount = acRepo.findByNumeroAndTipo(transactionDTO.getSourceAccountName(), transactionDTO.getSourceAccountType());
-		Account destinationAccount = acRepo.findByNumeroAndTipo(transactionDTO.getDestinationAccountName(), transactionDTO.getDestinationAccountType());
+		Account sourceAccount = acRepo.findByNumeroAndTipo(transactionDTO.getSourceAccountName(), AccountType.getAccountType(transactionDTO.getSourceAccountType()));
+		Account destinationAccount = acRepo.findByNumeroAndTipo(transactionDTO.getDestinationAccountName(), AccountType.getAccountType(transactionDTO.getDestinationAccountType()));
 
 		AccountPlan acp = null;
 		if(sourceAccount==null || sourceAccount.getUsuario()==null)
@@ -152,11 +151,11 @@ public class TransactionDTO {
 		this.destinationAccountName = destinationAccount;
 	}
 	
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

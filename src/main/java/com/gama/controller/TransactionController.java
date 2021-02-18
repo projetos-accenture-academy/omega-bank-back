@@ -24,7 +24,11 @@ import com.gama.model.User;
 import com.gama.model.dto.AccountPlanDTO;
 import com.gama.model.dto.TransactionDTO;
 import com.gama.service.TransactionService;
+import com.gama.utils.AccountCategoriesSum;
+import com.gama.utils.AccountInfo;
+import com.gama.utils.AccountInfoDateRange;
 import com.gama.utils.CategorizedTransactionAuxiliary;
+import com.gama.utils.DateRange;
 
 @Controller
 @RestController
@@ -33,27 +37,10 @@ public class TransactionController {
 
 	@Autowired
 	private TransactionService transactionService;
+
 	
-	@Autowired
-	private ModelMapper modelMapper = new ModelMapper();
-	
-	//Wrapper class for request body
-	public class AccountInfo
-	{
-		public String accountName;
-		public String accountType;
-	}
-	
-	
-	//Wrapper class for request body
-	public class AccountInfoDateRange
-	{
-		public String accountName;
-		public String accountType;
-		public LocalDate startDate;
-		public LocalDate endDate;
-		
-	}
+
+
 	
 	//--------------------------------------------------------GET---------------------------------------------------------------
 	
@@ -93,7 +80,7 @@ public class TransactionController {
 	 * @throws IllegalArgumentException
 	 * @throws Exception
 	 */
-	@GetMapping(path = "/sourceAccount", produces="application/json")
+	@PostMapping(path = "/sourceAccount", consumes = "application/json", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public Iterable<TransactionDTO> getTransactionsBySourceAccount(@RequestBody AccountInfo sourceAccount) 
 			throws IllegalArgumentException, Exception
@@ -110,7 +97,7 @@ public class TransactionController {
 	 * @throws Exception 
 	 * @throws IllegalArgumentException 
 	 */
-	@GetMapping(path = "/destinationAccount", produces="application/json")
+	@PostMapping(path = "/destinationAccount", consumes = "application/json", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public Iterable<TransactionDTO> getTransactionsByDestinationAccount(@RequestBody AccountInfo destinationAccount) 
 			throws IllegalArgumentException, Exception
@@ -129,28 +116,30 @@ public class TransactionController {
 	 * @throws Exception 
 	 * @throws IllegalArgumentException 
 	 */
-	@GetMapping(path = "/date", produces="application/json")
+	@PostMapping(path = "/date", consumes="application/json" , produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<TransactionDTO> getTransactionsByDate(@RequestBody LocalDate date) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsByDate(@RequestBody String date) throws IllegalArgumentException, Exception
 	{
-		return transactionService.getTransactionsByDate(date);
+		LocalDate lDate = LocalDate.parse(date);
+		return transactionService.getTransactionsByDate(lDate);
 	}
 	
 	
 	
 	/**
 	 * Retorna todas as Transações na Base de dados que estejam entre a data de inicio e de fim da busca
-	 * @param startDate Data de início da busca
-	 * @param endDate Data de fim da busca
-	 * @return
+	 * @param dateRange Datas de início e fim da busca
+	 * @return Todas as transações ocorridas neste intervalo de tempo
 	 * @throws IllegalArgumentException
 	 * @throws Exception
 	 */
-	@GetMapping(path = "/dateRange", produces="application/json")
+	@PostMapping(path = "/dateRange", consumes="application/json" , produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<TransactionDTO> getTransactionsByDateRange(@RequestBody LocalDate startDate, @RequestBody LocalDate endDate) throws IllegalArgumentException, Exception
+	public Iterable<TransactionDTO> getTransactionsByDateRange(@RequestBody DateRange dateRange) 
+			throws IllegalArgumentException, Exception
 	{
-		return transactionService.getTransactionsByDateRange(startDate, endDate);
+		return transactionService.getTransactionsByDateRange(LocalDate.parse(dateRange.startDate), 
+				LocalDate.parse(dateRange.endDate));
 	}
 
 	
@@ -163,13 +152,13 @@ public class TransactionController {
 	 * @throws IllegalArgumentException
 	 * @throws Exception
 	 */
-	@GetMapping(path = "/sourceAccount/dateRange", produces="application/json")
+	@PostMapping(path = "/sourceAccount/dateRange", consumes="application/json", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public Iterable<TransactionDTO> getTransactionsBySourceAccountAndDateBetween(@RequestBody AccountInfoDateRange sourceAccount) 
 			throws IllegalArgumentException, Exception
 	{
 		return transactionService.getTransactionsBySourceAccountAndDateBetween(sourceAccount.accountName, 
-				sourceAccount.accountType, sourceAccount.startDate, sourceAccount.endDate);
+				sourceAccount.accountType, LocalDate.parse(sourceAccount.startDate), LocalDate.parse(sourceAccount.endDate));
 	}
 	
 	
@@ -182,42 +171,43 @@ public class TransactionController {
 	 * @throws IllegalArgumentException
 	 * @throws Exception
 	 */	
-	@GetMapping(path = "/destinationAccount/dateRange", produces="application/json")
+	@PostMapping(path = "/destinationAccount/dateRange", consumes = "application/json" , produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public Iterable<TransactionDTO> getTransactionsByDestinationAccountAndDateBetween(@RequestBody AccountInfoDateRange destinationAccount) 
 			throws IllegalArgumentException, Exception
 	{
 		return transactionService.getTransactionsByDestinationAccountAndDateBetween(destinationAccount.accountName, 
-				destinationAccount.accountType, destinationAccount.startDate, destinationAccount.endDate);
+				destinationAccount.accountType, LocalDate.parse(destinationAccount.startDate), LocalDate.parse(destinationAccount.endDate));
 	}
 	
 	
 	/**
 	 * Retorna uma lista de soma de valores Transações que entraram em uma conta dentro de um intervalo de datas, categorizadas por Plano de Conta
-	 * @param idIngoingAccount
-	 * @param startDate
-	 * @param endDate
+	 * @param accountDateInfo Armazena o ID da conta, e as datas de início e fim da requisição
 	 * @return
 	 */
-	@GetMapping(path = "/ingoingCategorizedTransactions", produces="application/json")
+	@PostMapping(path = "/ingoingCategorizedTransactions", consumes="application/json", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan(Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
+	public Iterable<CategorizedTransactionAuxiliary> getIngoingTransactionsCategorizedByAccountPlan
+	(@RequestBody AccountCategoriesSum accountDateInfo)//Long idIngoingAccount, LocalDate startDate, LocalDate endDate)
 	{
-		return transactionService.getIngoingTransactionsCategorizedByAccountPlan(idIngoingAccount, startDate, endDate);
+		
+		return transactionService.getIngoingTransactionsCategorizedByAccountPlan(accountDateInfo.accountId, 
+				LocalDate.parse(accountDateInfo.startDate), LocalDate.parse(accountDateInfo.endDate));
 	}
 	
 	/**
 	 * Retorna uma lista de soma de valores Transações que saíram em uma conta dentro de um intervalo de datas, categorizadas por Plano de Conta
-	 * @param idOutgoingAccount
-	 * @param startDate
-	 * @param endDate
+	 * @param accountDateInfo Armazena o ID da conta, e as datas de início e fim da requisição
 	 * @return
 	 */
-	@GetMapping(path = "/outgoingCategorizedTransactions", produces="application/json")
+	@PostMapping(path = "/outgoingCategorizedTransactions", consumes = "application/json", produces="application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan(Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
+	public Iterable<CategorizedTransactionAuxiliary> getOutgoingTransactionsCategorizedByAccountPlan
+	(@RequestBody AccountCategoriesSum accountDateInfo)//Long idOutgoingAccount, LocalDate startDate, LocalDate endDate)
 	{
-		return transactionService.getOutgoingTransactionsCategorizedByAccountPlan(idOutgoingAccount, startDate, endDate);
+		return transactionService.getOutgoingTransactionsCategorizedByAccountPlan(accountDateInfo.accountId, 
+				LocalDate.parse(accountDateInfo.startDate), LocalDate.parse(accountDateInfo.endDate));
 	}
 
 	
